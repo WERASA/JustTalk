@@ -3,6 +3,7 @@ package com.example.a700_15isk.justtalk.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,13 +17,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a700_15isk.justtalk.bombtools.bean.User;
 import com.example.a700_15isk.justtalk.tools.MyApp;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
 import com.example.a700_15isk.justtalk.tools.UserTool;
 import com.example.a700_15isk.justtalk.views.Login_Circle;
 
+import cn.bmob.newim.BmobIM;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
 
@@ -30,24 +31,24 @@ import cn.bmob.v3.listener.LogInListener;
  * Created by 700-15isk on 2017/8/17.
  */
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class RegisterFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "LoginActivity";
     public float cx, radius, height;
-    private TextView Register;
+    private TextView login;
     private EditText account;
     private EditText password;
     private Login_Circle loginCircle;
     private ProgressBar progressBar;
     private String userName;
     private String mPassword;
+    Context context;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragmen_register, container, false);
 
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -61,33 +62,31 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         account = (EditText) getView().findViewById(R.id.account);
         password = (EditText) getView().findViewById(R.id.password);
         loginCircle = (Login_Circle) getView().findViewById(R.id.login_Circle);
-        Register = (TextView) getView().findViewById(R.id.login);
+        login = (TextView) getView().findViewById(R.id.login);
         progressBar = (ProgressBar) getView().findViewById(R.id.login_progress);
         loginCircle.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
-        Register.setOnClickListener(this);
+        login.setOnClickListener(this);
 
     }
-
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login:
-                userLogin();
+                setBombUser();
                 break;
-
         }
     }
 
 
 
 
-    public void userLogin() {
-        User loginUser = new User();
-        userName = account.getText().toString();
+    private void setBombUser() {
         mPassword = password.getText().toString();
-        UserTool.getInstance().login(userName,mPassword, new LogInListener() {
+        userName = account.getText().toString();
+
+        UserTool.getInstance().register(userName, mPassword, new LogInListener() {
             @Override
             public void done(Object o, BmobException e) {
                 if (e == null) {
@@ -102,8 +101,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private void startLoginAnimator() {
-         progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         password.setVisibility(View.INVISIBLE);
         account.setVisibility(View.INVISIBLE);
         loginCircle.setVisibility(View.VISIBLE);
@@ -119,36 +133,30 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         set.play(objectAnimator).with(mObjectAnimator);
         set.setDuration(1000);
         set.start();
-        set.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+       set.addListener(new Animator.AnimatorListener() {
+       @Override
+       public void onAnimationStart(Animator animation) {
 
-            }
+       }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (isAdded()){
-                    Intent intent=new Intent(MyApp.getMyAppContext(), HomePagerActivity.class);
-                    startActivity(intent);
-                }
+       @Override
+       public void onAnimationEnd(Animator animation) {
+           Intent intent=new Intent(MyApp.getMyAppContext(), HomePagerActivity.class);
+           startActivity(intent);
+       }
 
-            }
+       @Override
+       public void onAnimationCancel(Animator animation) {
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+       }
 
-            }
+       @Override
+       public void onAnimationRepeat(Animator animation) {
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-
-
+       }
+   });
     }
 
 
 
 }
-

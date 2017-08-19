@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">JustTalk</string>
+    <string name="account">account</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="meet_your_friend">Meet your friend now!</string>
 </resources>

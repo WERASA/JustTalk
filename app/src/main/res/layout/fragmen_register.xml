@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
     <com.example.a700_15isk.justtalk.views.Login_Circle
         android:id="@+id/login_Circle"
         android:layout_width="340dp"
-        android:layout_height="140dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-
-
         android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.501"
-        app:mColor="#fff" />
+        app:mColor="#fff"
+        />
 
     <ProgressBar
         android:id="@+id/login_progress"
@@ -46,10 +47,12 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/round"
-        android:hint="account"
+        android:hint="@string/account"
+        android:textColor="@color/textColor"
         android:maxLines="1"
         android:paddingLeft="40dp"
         android:textSize="17sp"
+        android:alpha="0.8"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -66,16 +69,18 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/round"
-        android:hint="password"
+        android:hint="@string/password"
         android:inputType="numberPassword"
         android:maxLines="1"
+        android:alpha="0.8"
         android:paddingLeft="40dp"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.501" />
+        app:layout_constraintVertical_bias="0.501"
+        android:textColor="@color/textColor"/>
 
 
     <TextView
@@ -90,8 +95,10 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/round"
         android:gravity="center"
-        android:text="Login"
+        android:textColor="@color/textColor"
+        android:text="@string/register"
         android:textSize="17sp"
+        android:alpha="0.8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
