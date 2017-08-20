@@ -1,4 +1,4 @@
-package com.example.a700_15isk.justtalk.bombtools.bean;
+package com.example.a700_15isk.justtalk.bmobtools.bean;
 
 import cn.bmob.v3.BmobObject;
 

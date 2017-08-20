@@ -1,21 +1,14 @@
-package com.example.a700_15isk.justtalk.bombtools;
+package com.example.a700_15isk.justtalk.bmobtools;
 
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
-import com.example.a700_15isk.justtalk.bombtools.bean.User;
+import com.example.a700_15isk.justtalk.bmobtools.bean.User;
 import com.example.a700_15isk.justtalk.event.RefreshEvent;
 import com.example.a700_15isk.justtalk.tools.MyApp;
 
 import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.core.ConnectionStatus;
-import cn.bmob.newim.event.MessageEvent;
-import cn.bmob.newim.event.OfflineMessageEvent;
 import cn.bmob.newim.listener.ConnectListener;
-import cn.bmob.newim.listener.ConnectStatusChangeListener;
-import cn.bmob.newim.listener.ObseverListener;
-import cn.bmob.newim.notification.BmobNotificationManager;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;

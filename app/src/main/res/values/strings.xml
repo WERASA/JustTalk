@@ -5,4 +5,8 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="meet_your_friend">Meet your friend now!</string>
+    <string name="name">name</string>
+    <string name="sex">sex</string>
+    <string name="age">age</string>
+    <string name="e_mail">e-mail</string>
 </resources>

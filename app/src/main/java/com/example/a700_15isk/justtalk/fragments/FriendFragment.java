@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.a700_15isk.justtalk.bombtools.ToolManager;
-import com.example.a700_15isk.justtalk.bombtools.bean.Friend;
+import com.example.a700_15isk.justtalk.bmobtools.ToolManager;
+import com.example.a700_15isk.justtalk.bmobtools.bean.Friend;
 import com.example.a700_15isk.justtalk.databinding.FragmentFriendsBinding;
 import com.example.a700_15isk.justtalk.tools.MyApp;
 import com.example.a700_15isk.justtalk.R;
@@ -22,8 +21,6 @@ import java.util.List;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-
-import static android.content.ContentValues.TAG;
 
 
 /**

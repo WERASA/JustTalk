@@ -1,7 +1,5 @@
 package com.example.a700_15isk.justtalk.activities;
 
-import android.annotation.TargetApi;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -12,30 +10,20 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.a700_15isk.justtalk.PopuActivity;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.adapters.HomePagerAdapter;
-import com.example.a700_15isk.justtalk.bombtools.BombInitialize;
-import com.example.a700_15isk.justtalk.bombtools.bean.User;
+import com.example.a700_15isk.justtalk.bmobtools.BombInitialize;
 import com.example.a700_15isk.justtalk.databinding.ActivityHomePagerBinding;
 import com.example.a700_15isk.justtalk.fragments.ChatsFragment;
 import com.example.a700_15isk.justtalk.fragments.FriendFragment;
 import com.example.a700_15isk.justtalk.fragments.SelfFragment;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
-import com.example.a700_15isk.justtalk.tools.MyApp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.core.ConnectionStatus;
-import cn.bmob.newim.listener.ConnectListener;
-import cn.bmob.newim.listener.ConnectStatusChangeListener;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
 import devlight.io.library.ntb.NavigationTabBar;
 
 

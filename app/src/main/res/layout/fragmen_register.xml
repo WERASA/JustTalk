@@ -53,6 +53,7 @@
         android:paddingLeft="40dp"
         android:textSize="17sp"
         android:alpha="0.8"
+
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -70,6 +71,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/round"
         android:hint="@string/password"
+        android:singleLine="true"
         android:inputType="numberPassword"
         android:maxLines="1"
         android:alpha="0.8"
@@ -84,6 +86,7 @@
 
 
     <TextView
+        android:singleLine="true"
         android:id="@+id/login"
         android:layout_width="160dp"
         android:layout_height="60dp"
