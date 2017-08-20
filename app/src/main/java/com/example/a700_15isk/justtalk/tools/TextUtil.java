@@ -42,15 +42,15 @@ public class TextUtil {
             public void afterTextChanged(Editable s) {
                    if (Type==CHANGE_AGE){
                        user.setAge(Integer.valueOf(editText.getText().toString()));
-                       UserTool.getInstance().upDate(user,context);
+                       UserTool.getInstance().update(user,context);
                    }
                    else if(Type==CHANGE_EMAIL){
                        user.setEmail(editText.getText().toString());
-                       UserTool.getInstance().upDate(user,context);
+                       UserTool.getInstance().update(user,context);
                    }
                    else if(Type==CHANGE_NICK){
                        user.setNick(editText.getText().toString());
-                       UserTool.getInstance().upDate(user,context);
+                       UserTool.getInstance().update(user,context);
                    }
             }
         });

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <com.example.a700_15isk.justtalk.views.Login_Circle
+    <com.example.a700_15isk.justtalk.views.LoginCircle
         android:id="@+id/login_Circle"
         android:layout_width="340dp"
         android:layout_height="100dp"

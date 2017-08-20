@@ -17,7 +17,18 @@
             android:id="@+id/empty_text"
             android:textSize="20dp"
             />
-
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_morph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_add_black_80dp"
+            app:fabSize="normal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/friendlist"
             android:layout_width="match_parent"

@@ -72,7 +72,7 @@ public class QiniuUploadTool {
                          if (info.isOK()){
                              String mAvatar="http://olekc4jwu.bkt.clouddn.com/"+key;
                              user.setAvatar(mAvatar);
-                             UserTool.getInstance().upDate(user,context);
+                             UserTool.getInstance().update(user,context);
                          }
                 }
             },null);

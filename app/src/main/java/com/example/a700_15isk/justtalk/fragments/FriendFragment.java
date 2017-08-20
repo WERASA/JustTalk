@@ -1,14 +1,20 @@
 package com.example.a700_15isk.justtalk.fragments;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a700_15isk.justtalk.PopuActivity;
+import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
 import com.example.a700_15isk.justtalk.tools.bmobtools.ToolManager;
 import com.example.a700_15isk.justtalk.bean.Friend;
 import com.example.a700_15isk.justtalk.databinding.FragmentFriendsBinding;
@@ -34,7 +40,7 @@ public class FriendFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
+
     }
 
     @Nullable
@@ -67,6 +73,7 @@ public class FriendFragment extends Fragment implements View.OnClickListener {
                         e.printStackTrace();
                 }
             });
+            mBinding.fabMorph.setOnClickListener(this);
 
         }
 
@@ -74,8 +81,15 @@ public class FriendFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.fab_morph:
+                Intent login = PopuActivity.getStartIntent(getActivity(), PopuActivity.MORPH_TYPE_BUTTON);
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation
+                        (getActivity(), v,getString(R.string.transition_morph_view));
+                startActivity(login, options.toBundle());
+        }
     }
 }

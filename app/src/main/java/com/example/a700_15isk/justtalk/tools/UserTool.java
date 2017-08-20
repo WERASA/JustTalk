@@ -27,7 +27,7 @@ public class UserTool {
         return Instance;
     }
 
-    public void upDate(User user, final Context context) {
+    public void update(User user, final Context context) {
         BmobUser bmobUser = BmobUser.getCurrentUser();
         user.update(bmobUser.getObjectId(), new UpdateListener() {
             @Override

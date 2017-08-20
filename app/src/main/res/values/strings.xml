@@ -9,4 +9,7 @@
     <string name="sex">sex</string>
     <string name="age">age</string>
     <string name="e_mail">e-mail</string>
+    <string name="Who_do_you_want_to_see">Who do you want to meet?</string>
+    <string name="Say_something">Say something to your friend</string>
+    <string name="transition_morph_view" translatable="false">morph_view_transition</string>
 </resources>

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
 import com.example.a700_15isk.justtalk.tools.TextUtil;
 import com.example.a700_15isk.justtalk.tools.UserTool;
-import com.example.a700_15isk.justtalk.views.Login_Circle;
+import com.example.a700_15isk.justtalk.views.LoginCircle;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
@@ -38,7 +37,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private TextView Register;
     private EditText account;
     private EditText password;
-    private Login_Circle loginCircle;
+    private LoginCircle loginCircle;
     private ProgressBar progressBar;
     private String userName;
     private String mPassword;
@@ -62,7 +61,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private void init() {
         account = (EditText) getView().findViewById(R.id.account);
         password = (EditText) getView().findViewById(R.id.password);
-        loginCircle = (Login_Circle) getView().findViewById(R.id.login_Circle);
+        loginCircle = (LoginCircle) getView().findViewById(R.id.login_Circle);
         Register = (TextView) getView().findViewById(R.id.login);
         progressBar = (ProgressBar) getView().findViewById(R.id.login_progress);
         loginCircle.setVisibility(View.INVISIBLE);

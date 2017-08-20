@@ -17,32 +17,32 @@ import com.example.a700_15isk.justtalk.R;
  * Created by 700-15isk on 2017/8/15.
  */
 
-public class Login_Circle extends View {
+public class LoginCircle extends View {
     private int mColor;
     private Paint mPaint = new Paint();
     private float cx, cy;
     private float radius = 100;
 
 
-    public Login_Circle(Context context, @Nullable AttributeSet attrs) {
+    public LoginCircle(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Login_Circle);
-        mColor = typedArray.getColor(R.styleable.Login_Circle_mColor, Color.RED);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LoginCircle);
+        mColor = typedArray.getColor(R.styleable.LoginCircle_mColor, Color.RED);
         typedArray.recycle();
         init();
     }
 
 
-    public Login_Circle(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public LoginCircle(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Login_Circle);
-        mColor = typedArray.getColor(R.styleable.Login_Circle_mColor, Color.RED);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LoginCircle);
+        mColor = typedArray.getColor(R.styleable.LoginCircle_mColor, Color.RED);
         typedArray.recycle();
         init();
 
     }
 
-    public Login_Circle(Context context) {
+    public LoginCircle(Context context) {
         super(context);
     }
 

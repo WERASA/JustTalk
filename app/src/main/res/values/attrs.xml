@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
     <resources>
-        <declare-styleable name="Login_Circle">
+        <declare-styleable name="LoginCircle">
             <attr name="mColor" format="color" />
         </declare-styleable>
     </resources>

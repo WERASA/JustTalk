@@ -29,7 +29,7 @@ public class BombInitialize {
             @Override
             public void done(String uid, BmobException e) {
                       if (e==null){
-                          Toast.makeText(context ,"success",Toast.LENGTH_SHORT).show();
+
                           EventBus.getDefault().post(new RefreshEvent());
                       }
             }

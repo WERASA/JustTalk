@@ -1,7 +1,6 @@
 package com.example.a700_15isk.justtalk.fragments;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -21,12 +20,10 @@ import android.widget.Toast;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.example.a700_15isk.justtalk.R;
-import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
 import com.example.a700_15isk.justtalk.bean.SexBean;
 import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.FragmentSelfBinding;
 import com.example.a700_15isk.justtalk.tools.BitMapUtil;
-import com.example.a700_15isk.justtalk.tools.MyApp;
 import com.example.a700_15isk.justtalk.tools.QiniuUploadTool;
 import com.example.a700_15isk.justtalk.tools.TextUtil;
 import com.example.a700_15isk.justtalk.tools.UserTool;
@@ -155,12 +152,12 @@ public class SelfFragment extends Fragment {
                 if (selectSex.equals("Man")) {
                     userInfo.setSex(true);
                     mBinding.sex.setText("Man");
-                    UserTool.getInstance().upDate(userInfo, getContext());
+                    UserTool.getInstance().update(userInfo, getContext());
 
                 } else if (selectSex.equals("Woman")) {
                     userInfo.setSex(false);
                     mBinding.sex.setText("Woman");
-                    UserTool.getInstance().upDate(userInfo, getContext());
+                    UserTool.getInstance().update(userInfo, getContext());
                 }
 
             }
