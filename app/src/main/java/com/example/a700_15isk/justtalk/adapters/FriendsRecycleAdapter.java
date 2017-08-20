@@ -42,8 +42,11 @@ public class FriendsRecycleAdapter extends RecyclerView.Adapter<FriendsRecycleAd
     @Override
     public void onBindViewHolder(FriendsHolder holder, int position) {
         holder.userNick.setText(friends.get(position).getFriendUser().getNick());
-        holder.userAccount.setText(friends.get(position).getUser().getAge());
-        if (!friends.get(position).getFriendUser().getAvatar().equals("")){
+        if (friends.get(position).getFriendUser().getAge()!=null){
+            holder.userAccount.setText(friends.get(position).getUser().getAge());
+        }
+
+        if (friends.get(position).getFriendUser().getAvatar()!=null){
             Glide.with(MyApp.getMyAppContext()).load(friends.get(position).getFriendUser().getAvatar()).into(holder.userAvatar);
         }
     }

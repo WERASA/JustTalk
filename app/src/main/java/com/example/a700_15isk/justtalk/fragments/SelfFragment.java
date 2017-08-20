@@ -64,24 +64,6 @@ public class SelfFragment extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_self, container, false);
         setPvOptionsText();
         init();
-        mBinding.sex.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pvOptions.show();
-            }
-        });
-        mBinding.avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-
-                } else
-                    openAlbum();
-            }
-            });
 
 
         return mBinding.getRoot();
@@ -105,8 +87,7 @@ public class SelfFragment extends Fragment {
             Uri uri = data.getData();
             path = b.getPath(uri,getActivity());
             Log.d("log", path);
-            QiniuUploadTool.upload(path,userInfo.getNick(),userInfo);
-
+            QiniuUploadTool.upload(path,userInfo.getNick(),userInfo,getContext());
             Glide.with(getActivity()).load(path).into(mBinding.avatar);
         }
 
@@ -115,6 +96,8 @@ public class SelfFragment extends Fragment {
     private void init() {
         userInfo = BmobUser.getCurrentUser(User.class);
         userNick = userInfo.getNick();
+
+
         if (userInfo.getAge() != null) {
             mBinding.age.setText(userInfo.getAge() + "");
         }
@@ -128,6 +111,27 @@ public class SelfFragment extends Fragment {
         if (userInfo.getNick() != null) {
             mBinding.nickName.setText(userInfo.getNick());
         }
+        if (userInfo.getAvatar()!=null){
+            Glide.with(getActivity()).load(userInfo.getAvatar()).into(mBinding.avatar);
+        }
+        mBinding.sex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pvOptions.show();
+            }
+        });
+        mBinding.avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
+                } else
+                    openAlbum();
+            }
+        });
 
         initPickView();
         setTextChangeListen();

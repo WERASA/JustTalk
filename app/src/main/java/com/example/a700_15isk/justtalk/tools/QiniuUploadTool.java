@@ -1,5 +1,6 @@
 package com.example.a700_15isk.justtalk.tools;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.a700_15isk.justtalk.bean.User;
@@ -60,16 +61,18 @@ public class QiniuUploadTool {
             }
             return  null;
         }
-        public static void upload(final String path, String key, final User user){
+        public static void upload(final String path, String key, final User user, final Context context){
             UploadManager uploadManager=new UploadManager();
+
             Auth auth=Auth.create("EkgHnK6hay4eCw73StmWB6Dz-r9-l8bHGG7df7b8","l7hicsICYNt7Q3foskLmhSBnAtLICb_rwa8uE3bI");
-            String token=auth.uploadToken("justtalk");
+            String token=auth.uploadToken("zhihu");
             uploadManager.put(path, key, token, new UpCompletionHandler() {
                 @Override
                 public void complete(String key, ResponseInfo info, JSONObject response) {
                          if (info.isOK()){
                              String mAvatar="http://olekc4jwu.bkt.clouddn.com/"+key;
                              user.setAvatar(mAvatar);
+                             UserTool.getInstance().upDate(user,context);
                          }
                 }
             },null);
