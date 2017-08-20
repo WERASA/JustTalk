@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.adapters.ChatsRecycleAdapter;
-import com.example.a700_15isk.justtalk.bmobtools.bean.Friend;
+import com.example.a700_15isk.justtalk.bean.Friend;
 import com.example.a700_15isk.justtalk.databinding.FragmentChatsBinding;
 
 import java.util.ArrayList;

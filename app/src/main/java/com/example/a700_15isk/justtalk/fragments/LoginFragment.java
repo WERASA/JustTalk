@@ -17,10 +17,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a700_15isk.justtalk.bmobtools.bean.User;
+import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.tools.MyApp;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
+import com.example.a700_15isk.justtalk.tools.TextUtil;
 import com.example.a700_15isk.justtalk.tools.UserTool;
 import com.example.a700_15isk.justtalk.views.Login_Circle;
 
@@ -67,18 +68,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginCircle.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         Register.setOnClickListener(this);
-        account.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return(event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
-        password.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return(event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
+        TextUtil.banEnter(password);
+        TextUtil.banEnter(account);
 
     }
 

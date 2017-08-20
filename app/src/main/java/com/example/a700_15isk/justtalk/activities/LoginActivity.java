@@ -13,7 +13,7 @@ import com.example.a700_15isk.justtalk.adapters.LoginPagerAdapter;
 import com.example.a700_15isk.justtalk.fragments.LoginFragment;
 import com.example.a700_15isk.justtalk.fragments.RegisterFragment;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
-import com.example.a700_15isk.justtalk.bmobtools.BombInitialize;
+import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
 
 import java.util.ArrayList;
 import java.util.List;

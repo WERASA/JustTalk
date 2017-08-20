@@ -1,9 +1,9 @@
-package com.example.a700_15isk.justtalk.bmobtools;
+package com.example.a700_15isk.justtalk.tools.bmobtools;
 
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.a700_15isk.justtalk.bmobtools.bean.User;
+import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.event.RefreshEvent;
 import com.example.a700_15isk.justtalk.tools.MyApp;
 

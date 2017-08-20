@@ -19,7 +19,8 @@
             android:layout_height="120dp"
             android:layout_centerInParent="true"
             android:src="@drawable/text"
-            android:background="@color/itemBackground"/>
+            android:background="@color/itemBackground"
+            android:id="@+id/avatar"/>
 
 
     </RelativeLayout>

@@ -2,7 +2,7 @@ package com.example.a700_15isk.justtalk.tools;
 
 import android.content.Context;
 
-import com.example.a700_15isk.justtalk.bmobtools.bean.User;
+import com.example.a700_15isk.justtalk.bean.User;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;

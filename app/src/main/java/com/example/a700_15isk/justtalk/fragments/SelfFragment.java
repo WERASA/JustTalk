@@ -1,24 +1,34 @@
 package com.example.a700_15isk.justtalk.fragments;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.bumptech.glide.Glide;
 import com.example.a700_15isk.justtalk.R;
+import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
 import com.example.a700_15isk.justtalk.bean.SexBean;
-import com.example.a700_15isk.justtalk.bmobtools.bean.User;
+import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.FragmentSelfBinding;
+import com.example.a700_15isk.justtalk.tools.BitMapUtil;
+import com.example.a700_15isk.justtalk.tools.MyApp;
+import com.example.a700_15isk.justtalk.tools.QiniuUploadTool;
+import com.example.a700_15isk.justtalk.tools.TextUtil;
 import com.example.a700_15isk.justtalk.tools.UserTool;
 
 import java.util.ArrayList;
@@ -39,6 +49,9 @@ public class SelfFragment extends Fragment {
     private boolean sex;
     private String userEmail;
     private ArrayList<SexBean> sexItem = new ArrayList<>();
+   private int OPEN_ALBUM_CODE=1;
+    private String path;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,11 +70,47 @@ public class SelfFragment extends Fragment {
                 pvOptions.show();
             }
         });
+        mBinding.avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
+                } else
+                    openAlbum();
+            }
+            });
+
 
         return mBinding.getRoot();
 
     }
 
+    private void openAlbum() {
+        Intent intent=new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent,OPEN_ALBUM_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data==null){
+            Toast.makeText(getContext(),"Empty Avatar",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            BitMapUtil b=new BitMapUtil();
+            Uri uri = data.getData();
+            path = b.getPath(uri,getActivity());
+            Log.d("log", path);
+            QiniuUploadTool.upload(path,userInfo.getNick(),userInfo);
+
+            Glide.with(getActivity()).load(path).into(mBinding.avatar);
+        }
+
+    }
 
     private void init() {
         userInfo = BmobUser.getCurrentUser(User.class);
@@ -90,6 +139,8 @@ public class SelfFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
+
 
 
     private void initPickView() {
@@ -132,79 +183,15 @@ public class SelfFragment extends Fragment {
 
 
     private void setTextChangeListen() {
-        mBinding.age.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!mBinding.age.getText().toString().equals("")) {
-                    age = Integer.parseInt(mBinding.age.getText().toString());
-                    userInfo.setAge(age);
-                    UserTool.getInstance().upDate(userInfo, getContext());
-                }
-            }
-        });
-        mBinding.nickName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                userInfo.setNick(mBinding.nickName.getText().toString());
-                UserTool.getInstance().upDate(userInfo, getContext());
-            }
-        });
-        mBinding.eMail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                userInfo.setEmail(mBinding.eMail.getText().toString());
-                UserTool.getInstance().upDate(userInfo, getContext());
-            }
-        });
+        TextUtil.editTextTool(mBinding.eMail, TextUtil.CHANGE_EMAIL, userInfo, getContext());
+        TextUtil.editTextTool(mBinding.age, TextUtil.CHANGE_AGE, userInfo, getContext());
+        TextUtil.editTextTool(mBinding.nickName, TextUtil.CHANGE_NICK, userInfo, getContext());
     }
-    public void banEnter(){
-        mBinding.nickName.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return(event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
-        mBinding.age.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return(event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
-        mBinding.eMail.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return(event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
+
+
+    public void banEnter() {
+        TextUtil.banEnter(mBinding.age);
+        TextUtil.banEnter(mBinding.eMail);
+        TextUtil.banEnter(mBinding.nickName);
     }
 }

@@ -1,7 +1,7 @@
-package com.example.a700_15isk.justtalk.bmobtools;
+package com.example.a700_15isk.justtalk.tools.bmobtools;
 
-import com.example.a700_15isk.justtalk.bmobtools.bean.Friend;
-import com.example.a700_15isk.justtalk.bmobtools.bean.User;
+import com.example.a700_15isk.justtalk.bean.Friend;
+import com.example.a700_15isk.justtalk.bean.User;
 
 import java.util.List;
 

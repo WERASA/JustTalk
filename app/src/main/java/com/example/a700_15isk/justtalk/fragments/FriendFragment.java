@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.a700_15isk.justtalk.bmobtools.ToolManager;
-import com.example.a700_15isk.justtalk.bmobtools.bean.Friend;
+import com.example.a700_15isk.justtalk.tools.bmobtools.ToolManager;
+import com.example.a700_15isk.justtalk.bean.Friend;
 import com.example.a700_15isk.justtalk.databinding.FragmentFriendsBinding;
 import com.example.a700_15isk.justtalk.tools.MyApp;
 import com.example.a700_15isk.justtalk.R;

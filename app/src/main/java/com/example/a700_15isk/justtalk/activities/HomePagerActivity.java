@@ -14,7 +14,7 @@ import android.view.View;
 import com.example.a700_15isk.justtalk.PopuActivity;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.adapters.HomePagerAdapter;
-import com.example.a700_15isk.justtalk.bmobtools.BombInitialize;
+import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
 import com.example.a700_15isk.justtalk.databinding.ActivityHomePagerBinding;
 import com.example.a700_15isk.justtalk.fragments.ChatsFragment;
 import com.example.a700_15isk.justtalk.fragments.FriendFragment;

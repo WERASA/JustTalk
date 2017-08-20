@@ -1,4 +1,4 @@
-package com.example.a700_15isk.justtalk.bmobtools.bean;
+package com.example.a700_15isk.justtalk.bean;
 
 import cn.bmob.v3.BmobUser;
 
