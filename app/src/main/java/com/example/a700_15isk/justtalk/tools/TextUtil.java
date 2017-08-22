@@ -26,6 +26,7 @@ public class TextUtil {
             }
         });
     }
+
     public static void editTextTool(final EditText editText, final int Type, final User user, final Context context){
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -40,15 +41,16 @@ public class TextUtil {
 
             @Override
             public void afterTextChanged(Editable s) {
-                   if (Type==CHANGE_AGE){
+                   if (Type==CHANGE_AGE&&!editText.getText().toString().equals("")){
+
                        user.setAge(Integer.valueOf(editText.getText().toString()));
                        UserTool.getInstance().update(user,context);
                    }
-                   else if(Type==CHANGE_EMAIL){
+                   else if(Type==CHANGE_EMAIL&&!editText.getText().toString().equals("")){
                        user.setEmail(editText.getText().toString());
                        UserTool.getInstance().update(user,context);
                    }
-                   else if(Type==CHANGE_NICK){
+                   else if(Type==CHANGE_NICK&&!editText.getText().toString().equals("")){
                        user.setNick(editText.getText().toString());
                        UserTool.getInstance().update(user,context);
                    }

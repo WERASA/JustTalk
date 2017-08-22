@@ -93,11 +93,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             public void done(Object o, BmobException e) {
                 if (e == null) {
                     startLoginAnimator();
+                    account.setText("");
+                    password.setText("");
                 } else {
                     Toast.makeText(MyApp.getMyAppContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        },getContext());
     }
 
 

@@ -23,7 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
  * Created by 700-15isk on 2017/8/20.
  */
 
-public class QiniuUploadTool {
+public class QiNiuUploadTool {
         public static  String getKey(String scope ) throws NoSuchAlgorithmException {
             JSONObject jsonObject=new JSONObject();
             int putFlags=1;

@@ -1,0 +1,91 @@
+package com.example.a700_15isk.justtalk.adapters;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.example.a700_15isk.justtalk.R;
+import com.example.a700_15isk.justtalk.adapters.holders.BaseRecyclerHolder;
+import com.example.a700_15isk.justtalk.adapters.holders.textholder.TextReceiverHolder;
+import com.example.a700_15isk.justtalk.adapters.holders.textholder.TextSendHolder;
+import com.example.a700_15isk.justtalk.bean.MsgBean;
+import com.example.a700_15isk.justtalk.bean.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.newim.bean.BmobIMConversation;
+import cn.bmob.newim.bean.BmobIMMessage;
+import cn.bmob.newim.bean.BmobIMMessageType;
+import cn.bmob.v3.BmobUser;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+/**
+ * Created by 700-15isk on 2017/8/21.
+ */
+
+public class TalkRoomRecycleAdapter extends RecyclerView.Adapter {
+    private int resourceId;
+    Context context;
+    List<BmobIMMessage> msgs=new ArrayList<>();
+    User user;
+    private final int TYPE_RECEIVER_TXT = 0;
+    private final int TYPE_SEND_TXT = 1;
+    BmobIMConversation c;
+    private String currentUid="";
+    public TalkRoomRecycleAdapter(Context context, BmobIMConversation c) {
+        try {
+            currentUid = BmobUser.getCurrentUser(context).getObjectId();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.c =c;
+
+    }
+    public void addMessage(BmobIMMessage bmobIMMessage){
+        msgs.add(bmobIMMessage);
+        notifyDataSetChanged();
+    }
+
+    public void addMessages(List<BmobIMMessage> bmobIMMessage){
+        msgs.addAll(bmobIMMessage);
+        notifyDataSetChanged();
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        BmobIMMessage message=msgs.get(position);
+        if(message.getMsgType().equals(BmobIMMessageType.TEXT.getType())){
+            return message.getFromId().equals(currentUid) ? TYPE_SEND_TXT: TYPE_RECEIVER_TXT;
+        }
+        return -1;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_RECEIVER_TXT) {
+            return new TextReceiverHolder(parent,parent.getContext());
+        }else if (viewType==TYPE_SEND_TXT){
+            return new TextSendHolder(parent,parent.getContext(),c);
+        }
+        return null;
+    }
+
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ((BaseRecyclerHolder<BmobIMMessage>)holder).bindData(msgs.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return msgs.size();
+    }
+
+}

@@ -1,4 +1,4 @@
-package com.example.a700_15isk.justtalk;
+package com.example.a700_15isk.justtalk.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
+import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.animators.MorphAddToDialog;
 import com.example.a700_15isk.justtalk.animators.MorphDialogToAdd;
 

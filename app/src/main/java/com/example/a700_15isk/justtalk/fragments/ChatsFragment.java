@@ -26,20 +26,18 @@ import cn.bmob.newim.bean.BmobIMConversation;
 
 public class ChatsFragment extends Fragment {
     FragmentChatsBinding mBinding;
-    List<Friend> friends = new ArrayList<>();
-    List<BmobIMConversation> bmobIMConversations = new ArrayList<>();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_chats, container, false);
-        init();
         return mBinding.getRoot();
     }
 
@@ -47,22 +45,28 @@ public class ChatsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init();
 
     }
 
     private void init() {
+        List<Friend> friends = new ArrayList<>();
+        List<BmobIMConversation> bmobIMConversations = new ArrayList<>();
+        bmobIMConversations = BmobIM.getInstance().loadAllConversation();
+        if (bmobIMConversations != null && bmobIMConversations.size() > 0) {
 
-           bmobIMConversations = BmobIM.getInstance().loadAllConversation();
-        if(bmobIMConversations!=null && bmobIMConversations.size()>0){
-            ChatsRecycleAdapter chatsRecycleAdapter=new ChatsRecycleAdapter(bmobIMConversations);
-            mBinding.chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
+            ChatsRecycleAdapter chatsRecycleAdapter = new ChatsRecycleAdapter(bmobIMConversations);
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
+            mBinding.chatsList.setLayoutManager(linearLayoutManager);
             mBinding.chatsList.setAdapter(chatsRecycleAdapter);
-            }
         }
-
-
-
     }
+
+
+}
+
+
+
 
 
 

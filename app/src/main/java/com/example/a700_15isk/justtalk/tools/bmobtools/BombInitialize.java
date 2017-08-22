@@ -24,7 +24,7 @@ public class BombInitialize {
     }
     public static void connectToServe(final Context context){
         BmobIM.init(context);
-        User user = BmobUser.getCurrentUser(User.class);
+        User user =BmobUser.getCurrentUser(MyApp.getMyAppContext(), User.class);
         BmobIM.connect(user.getObjectId(), new ConnectListener() {
             @Override
             public void done(String uid, BmobException e) {

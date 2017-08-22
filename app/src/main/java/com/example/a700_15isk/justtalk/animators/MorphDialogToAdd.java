@@ -99,7 +99,7 @@ public class MorphDialogToAdd extends ChangeBounds {
             endValues.view.setBackground(background);
 
 
-            // hide child views (offset down & fade_fast out)
+
             if (endValues.view instanceof ViewGroup) {
                 ViewGroup vg = (ViewGroup) endValues.view;
                 float offset = vg.getHeight() / 3;

@@ -6,57 +6,95 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.a700_15isk.justtalk.R;
+import com.example.a700_15isk.justtalk.tools.ConversationUtil;
+import com.example.a700_15isk.justtalk.tools.MyApp;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by 700-15isk on 2017/8/19.
  */
 
-public class ChatsRecycleAdapter extends RecyclerView.Adapter<ChatsRecycleAdapter.ChatsHolder>{
+public class ChatsRecycleAdapter extends RecyclerView.Adapter<ChatsRecycleAdapter.ChatHolder> implements View.OnClickListener {
+    ChatHolder chatHolder;
 
-    ChatsHolder chatsHolder;
     List<BmobIMConversation> imConversations = new ArrayList<>();
-
+    OnItemClickListener mOnItemClickListener;
 
     public ChatsRecycleAdapter(List<BmobIMConversation> conversations) {
         this.imConversations = conversations;
     }
 
+
     @Override
-    public ChatsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChatHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chats, parent, false);
-        chatsHolder = new ChatsHolder(view);
-        return chatsHolder;
+        view.setOnClickListener(this);
+        chatHolder = new ChatHolder(view);
+        return chatHolder;
     }
 
     @Override
-    public void onBindViewHolder(ChatsHolder holder, int position) {
-        List<BmobIMMessage>bmobIMMessages=new ArrayList<>();
-        bmobIMMessages.addAll(imConversations.get(position).getMessages());
-        holder.conversationTitle.setText(imConversations.get(position).getConversationTitle());
-        holder.conversationTitle.setText(imConversations.get(position).getMessages().get(bmobIMMessages.size()).getContent());
+    public void onBindViewHolder(ChatHolder holder, int position) {
+       if (imConversations.get(position).getConversationTitle()!=null){
+           holder.mMessage.setText(imConversations.get(position).getConversationTitle());
+       }
+      if (imConversations.get(position).getConversationIcon()!=null){
+        Glide.with(MyApp.getMyAppContext())
+                .load(imConversations.get(position)
+                .getConversationIcon())
+                .into(holder.avatar);
     }
+    BmobIMMessage msg;
+     msg= ConversationUtil.queryMessage(imConversations.get(position),new BmobIMMessage());
+    if (msg.getContent()!=null)  {
+         holder.title.setText(msg.getContent());
+     }
 
+    }
 
     @Override
     public int getItemCount() {
         return imConversations.size();
     }
 
-    public class ChatsHolder extends RecyclerView.ViewHolder {
-        TextView conversation;
-        TextView conversationTitle;
+    @Override
+    public void onClick(View v) {
+        if (mOnItemClickListener != null) {
+            mOnItemClickListener.onItemClick(v, (int) v.getTag());
+        }
 
-        public ChatsHolder(View itemView) {
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
+    public static interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+
+
+
+
+    public class ChatHolder extends RecyclerView.ViewHolder {
+        TextView mMessage;
+        TextView title;
+        CircleImageView avatar;
+        public ChatHolder(View itemView) {
             super(itemView);
-            conversation = (TextView) itemView.findViewById(R.id.messageItem);
-            conversationTitle = (TextView) itemView.findViewById(R.id.messageTitle);
+            avatar=(CircleImageView)itemView.findViewById(R.id.avatar);
+            mMessage=(TextView)itemView.findViewById(R.id.messageTitle);
+            title=(TextView) itemView.findViewById(R.id.messageItem);
         }
     }
+
 }

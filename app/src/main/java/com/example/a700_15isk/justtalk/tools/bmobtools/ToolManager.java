@@ -1,5 +1,7 @@
 package com.example.a700_15isk.justtalk.tools.bmobtools;
 
+import android.content.Context;
+
 import com.example.a700_15isk.justtalk.bean.Friend;
 import com.example.a700_15isk.justtalk.bean.User;
 
@@ -25,27 +27,22 @@ public class ToolManager {
     private ToolManager(){}
 
 
-    public void queryFriends(final FindListener<Friend> listener){
+    public void queryFriends(final FindListener<Friend> listener, Context context){
         BmobQuery<Friend> query = new BmobQuery<>();
-        User user =BmobUser.getCurrentUser(User.class);
+        User user =BmobUser.getCurrentUser(context, User.class);
         query.addWhereEqualTo("user", user);
         query.include("friendUser");
         query.order("-updatedAt");
-        query.findObjects(new FindListener<Friend>() {
+        query.findObjects(context,new FindListener<Friend>() {
             @Override
-            public void done(List<Friend> list, BmobException e) {
-           //     e.printStackTrace();
-                if (e==null){
-                    listener.done(list,e);
-                }
-                else
-                    e.printStackTrace();
-
-
-
+            public void onSuccess(List<Friend> list) {
+                listener.onSuccess(list);
             }
 
-
+            @Override
+            public void onError(int i, String s) {
+                   listener.onError(i,s);
+            };
     });
 
 

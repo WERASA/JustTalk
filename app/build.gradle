@@ -11,6 +11,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    sourceSets {
+        main.jniLibs.srcDirs = ['libs']
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -34,12 +37,12 @@ dependencies {
     compile 'devlight.io:navigationtabbar:1.2.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'cn.bmob.android:bmob-im:2.0.5@aar'
-    compile 'cn.bmob.android:bmob-sdk:3.5.5'
-    compile 'cn.bmob.android:bmob-sms:1.0.1'
-    testCompile 'junit:junit:4.12'
+    //bmob-sdk:3.4.7
+    compile 'cn.bmob.android:bmob-sdk:3.4.7-aar'
     compile 'com.contrarywind:Android-PickerView:3.2.6'
     compile 'de.greenrobot:eventbus:3.0.0-beta1'
     compile 'com.qiniu:qiniu-android-sdk:7.3.3'
     compile 'com.qiniu:qiniu-java-sdk:7.2.3'
     compile 'com.github.bumptech.glide:glide:4.0.0'
+    testCompile 'junit:junit:4.12'
 }

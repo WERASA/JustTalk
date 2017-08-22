@@ -24,7 +24,7 @@ import com.example.a700_15isk.justtalk.bean.SexBean;
 import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.FragmentSelfBinding;
 import com.example.a700_15isk.justtalk.tools.BitMapUtil;
-import com.example.a700_15isk.justtalk.tools.QiniuUploadTool;
+import com.example.a700_15isk.justtalk.tools.QiNiuUploadTool;
 import com.example.a700_15isk.justtalk.tools.TextUtil;
 import com.example.a700_15isk.justtalk.tools.UserTool;
 
@@ -61,7 +61,7 @@ public class SelfFragment extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_self, container, false);
         setPvOptionsText();
         init();
-
+        initPickView();
 
         return mBinding.getRoot();
 
@@ -84,20 +84,24 @@ public class SelfFragment extends Fragment {
             Uri uri = data.getData();
             path = b.getPath(uri,getActivity());
             Log.d("log", path);
-            QiniuUploadTool.upload(path,userInfo.getNick(),userInfo,getContext());
+            QiNiuUploadTool.upload(path,userInfo.getNick(),userInfo,getContext());
             Glide.with(getActivity()).load(path).into(mBinding.avatar);
         }
 
     }
 
     private void init() {
-        userInfo = BmobUser.getCurrentUser(User.class);
-        userNick = userInfo.getNick();
+      userInfo =BmobUser.getCurrentUser(getContext(), User.class);
+
+        if (userNick!=null){
+            mBinding.nickName.setText(userInfo.getNick());
+        }
 
 
         if (userInfo.getAge() != null) {
             mBinding.age.setText(userInfo.getAge() + "");
         }
+
         if (userInfo.getSex()) {
             mBinding.sex.setText("Man");
         } else
@@ -130,7 +134,7 @@ public class SelfFragment extends Fragment {
             }
         });
 
-        initPickView();
+
         setTextChangeListen();
         banEnter();
 
