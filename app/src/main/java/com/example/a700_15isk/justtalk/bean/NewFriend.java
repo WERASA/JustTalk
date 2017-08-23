@@ -7,12 +7,42 @@ import java.io.Serializable;
  */
 
 public class NewFriend implements Serializable {
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    private  String uid;
+    private  String avatar;
     private Long id;
     private String msg;
     private String name;
     private Integer status;
     private Long time;
+    public NewFriend() {
 
+    }
+    public String getUid() {
+        return uid;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public NewFriend(Long id, String uid, String msg, String name, String avatar, Integer status, Long time) {
+        this.id = id;
+        this.uid = uid;
+        this.msg = msg;
+        this.name = name;
+
+        this.avatar = avatar;
+        this.status = status;
+        this.time = time;
+    }
     public Long getId() {
         return id;
     }

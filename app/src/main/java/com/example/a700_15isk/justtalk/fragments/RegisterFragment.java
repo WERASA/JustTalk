@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a700_15isk.justtalk.tools.MyApp;
+import com.example.a700_15isk.justtalk.MyApp;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
 import com.example.a700_15isk.justtalk.tools.TextUtil;
@@ -42,11 +42,12 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private String userName;
     private String mPassword;
     Context context;
-
+private  boolean isRegister=false;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragmen_register, container, false);
+
 
     }
 
@@ -85,6 +86,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
 
     private void setBombUser() {
+        if (isRegister){
+            return;
+        }
+        isRegister=true;
         mPassword = password.getText().toString();
         userName = account.getText().toString();
 
@@ -92,6 +97,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             @Override
             public void done(Object o, BmobException e) {
                 if (e == null) {
+                    isRegister=false;
                     startLoginAnimator();
                     account.setText("");
                     password.setText("");

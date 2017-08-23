@@ -32,12 +32,13 @@
                 android:layout_width="match_parent"
                 android:hint="@string/Who_do_you_want_to_see"
                 android:layout_height="50dp"
+                android:id="@+id/targetId"
 
                 />
             <EditText
                 android:hint="@string/Say_something"
                 android:paddingTop="10dp"
-
+                android:id="@+id/messageContent"
                 android:layout_width="match_parent"
                 android:layout_height="80dp" />
             <TextView
@@ -49,6 +50,7 @@
                 android:text="@string/meet_your_friend"
                 android:layout_width="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:onClick="query"
                 />
         </LinearLayout>
     </FrameLayout>

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.bean.Friend;
-import com.example.a700_15isk.justtalk.tools.MyApp;
+import com.example.a700_15isk.justtalk.MyApp;
 
 import java.util.ArrayList;
 import java.util.List;

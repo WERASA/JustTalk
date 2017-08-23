@@ -1,11 +1,11 @@
 package com.example.a700_15isk.justtalk.tools.bmobtools;
 
 import android.content.Context;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.event.RefreshEvent;
-import com.example.a700_15isk.justtalk.tools.MyApp;
+import com.example.a700_15isk.justtalk.MyApp;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.listener.ConnectListener;
@@ -29,7 +29,7 @@ public class BombInitialize {
             @Override
             public void done(String uid, BmobException e) {
                       if (e==null){
-
+                          Log.d("tag","success");
                           EventBus.getDefault().post(new RefreshEvent());
                       }
             }

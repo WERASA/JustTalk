@@ -16,15 +16,12 @@ import com.example.a700_15isk.justtalk.fragments.ChatsFragment;
 import com.example.a700_15isk.justtalk.fragments.FriendFragment;
 import com.example.a700_15isk.justtalk.fragments.SelfFragment;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
-import com.example.a700_15isk.justtalk.tools.MyApp;
-import com.example.a700_15isk.justtalk.tools.UserTool;
 import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.bean.BmobIMConversation;
 import devlight.io.library.ntb.NavigationTabBar;
 
 
@@ -50,7 +47,8 @@ public class HomePagerActivity extends AppCompatActivity  {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //清理导致内存泄露的资源
+        ActivityManager.removeActivity(this);
+
         BmobIM.getInstance().clear();
     }
 
@@ -59,6 +57,7 @@ public class HomePagerActivity extends AppCompatActivity  {
         BombInitialize.connectToServe(context);
       // List<BmobIMConversation>  bmobIMConversations = BmobIM.getInstance().loadAllConversation();
         mFragments = new ArrayList<>();
+        mFragments.clear();
         FriendFragment friendFragment = new FriendFragment();
         SelfFragment selfFragment = new SelfFragment();
         ChatsFragment chatsFragment = new ChatsFragment();
@@ -67,9 +66,8 @@ public class HomePagerActivity extends AppCompatActivity  {
         mFragments.add(selfFragment);
         HomePagerAdapter homePagerAdapter = new HomePagerAdapter(getSupportFragmentManager(), mFragments);
         mBinding.homePager.setAdapter(homePagerAdapter);
-
         mBinding.homePager.setCurrentItem(2);
-        if (getIntent().getExtras()!=null){
+                if (getIntent().getExtras()!=null){
         mBinding.homePager.setCurrentItem(getIntent().getIntExtra("tag",0));
         }
 

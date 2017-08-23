@@ -16,14 +16,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a700_15isk.justtalk.bean.User;
-import com.example.a700_15isk.justtalk.tools.MyApp;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
+import com.example.a700_15isk.justtalk.MyApp;
 import com.example.a700_15isk.justtalk.tools.TextUtil;
 import com.example.a700_15isk.justtalk.tools.UserTool;
 import com.example.a700_15isk.justtalk.views.LoginCircle;
 
+import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.bean.BmobIMUserInfo;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
 
@@ -41,6 +43,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private ProgressBar progressBar;
     private String userName;
     private String mPassword;
+    private boolean isLogining=false ;
 
     @Nullable
     @Override
@@ -77,6 +80,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login:
+
                 userLogin();
                 break;
 
@@ -84,31 +88,33 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
-
     public void userLogin() {
-        User loginUser = new User();
+        if (isLogining) {
+            return;
+        }
+        isLogining=true;
         userName = account.getText().toString();
         mPassword = password.getText().toString();
-        UserTool.getInstance().login(userName,mPassword, new LogInListener() {
+        UserTool.getInstance().login(userName, mPassword, new LogInListener() {
             @Override
             public void done(Object o, BmobException e) {
                 if (e == null) {
+                    isLogining=false;
+                    BmobUser user = (BmobUser) o;
+                    BmobIM.getInstance().updateUserInfo(new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getEmail()));
                     startLoginAnimator();
                     account.setText("");
                     password.setText("");
                 } else {
-                    Toast.makeText(MyApp.getMyAppContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyApp.getMyAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
-        },getContext());
+        }, getContext());
     }
 
 
-
-
     private void startLoginAnimator() {
-         progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         password.setVisibility(View.INVISIBLE);
         account.setVisibility(View.INVISIBLE);
         loginCircle.setVisibility(View.VISIBLE);
@@ -132,8 +138,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (isAdded()){
-                    Intent intent=new Intent(MyApp.getMyAppContext(), HomePagerActivity.class);
+                if (isAdded()) {
+                    Intent intent = new Intent(MyApp.getMyAppContext(), HomePagerActivity.class);
                     startActivity(intent);
                 }
 
@@ -152,7 +158,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     }
-
 
 
 }

@@ -22,7 +22,7 @@ public class TextUtil {
          editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return(event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
+                                      return(event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
             }
         });
     }

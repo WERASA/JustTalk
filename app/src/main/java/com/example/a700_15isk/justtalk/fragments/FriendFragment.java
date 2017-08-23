@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a700_15isk.justtalk.R;
-import com.example.a700_15isk.justtalk.activities.PopuActivity;
+import com.example.a700_15isk.justtalk.activities.AddNewFriendActivity;
 import com.example.a700_15isk.justtalk.activities.TalkActivity;
 import com.example.a700_15isk.justtalk.adapters.FriendsRecycleAdapter;
 import com.example.a700_15isk.justtalk.bean.Friend;
 import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.FragmentFriendsBinding;
-import com.example.a700_15isk.justtalk.tools.MyApp;
+import com.example.a700_15isk.justtalk.MyApp;
 import com.example.a700_15isk.justtalk.tools.bmobtools.ToolManager;
 
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ import java.util.List;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMUserInfo;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 
 
@@ -92,6 +93,7 @@ public class FriendFragment extends Fragment implements View.OnClickListener {
                 Intent intent = new Intent(getActivity(), TalkActivity.class);
                 Bundle bundle = new Bundle();
                 User user = friends.get(position).getFriendUser();
+
                 info = new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getAvatar());
                 bundle.putSerializable("user", friends.get(position).getFriendUser());
                 intent.putExtras(bundle);
@@ -111,8 +113,11 @@ public class FriendFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.fab_morph:
 
-
-                Intent login = PopuActivity.getStartIntent(getActivity(), PopuActivity.MORPH_TYPE_BUTTON);
+                User user= BmobUser.getCurrentUser(getContext(),User.class);
+                Intent login = AddNewFriendActivity.getStartIntent(getActivity(), AddNewFriendActivity.MORPH_TYPE_BUTTON);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("user",user);
+                login.putExtras(bundle);
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation
                         (getActivity(), v, getString(R.string.transition_morph_view));
                 startActivity(login, options.toBundle());

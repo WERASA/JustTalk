@@ -30,10 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class TalkRoomRecycleAdapter extends RecyclerView.Adapter {
-    private int resourceId;
-    Context context;
     List<BmobIMMessage> msgs=new ArrayList<>();
-    User user;
     private final int TYPE_RECEIVER_TXT = 0;
     private final int TYPE_SEND_TXT = 1;
     BmobIMConversation c;
@@ -46,6 +43,35 @@ public class TalkRoomRecycleAdapter extends RecyclerView.Adapter {
         }
         this.c =c;
 
+    }
+    public int findPosition(long id) {
+        int index = this.getCount();
+        int position = -1;
+        while(index-- > 0) {
+            if(this.getItemId(index) == id) {
+                position = index;
+                break;
+            }
+        }
+        return position;
+    }
+
+    public int findPosition(BmobIMMessage message) {
+        int index = this.getCount();
+        int position = -1;
+        while(index-- > 0) {
+            if(message.equals(this.getItem(index))) {
+                position = index;
+                break;
+            }
+        }
+        return position;
+    }
+    public BmobIMMessage getItem(int position){
+        return this.msgs == null?null:(position >= this.msgs.size()?null:this.msgs.get(position));
+    }
+    public int getCount() {
+        return this.msgs == null?0:this.msgs.size();
     }
     public void addMessage(BmobIMMessage bmobIMMessage){
         msgs.add(bmobIMMessage);
