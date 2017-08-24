@@ -23,7 +23,7 @@ public class AddFriendMessage extends BmobIMExtraMessage {
         add.setStatus(STATUS_VERIFY_NONE);
         try {
             String extra = msg.getExtra();
-            if(extra.equals("")){
+            if(!extra.equals("")){
                 JSONObject json =new JSONObject(extra);
                 String name = json.getString("name");
                 add.setName(name);

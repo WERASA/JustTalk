@@ -45,4 +45,18 @@ public class MyConversation extends Conversation {
             return R.drawable.text;
         }
     }
+
+    @Override
+    public String getLastMessageContent() {
+        return null;
+    }
+
+    @Override
+    public long getLastMessageTime() {
+        if(lastMsg!=null) {
+            return lastMsg.getCreateTime();
+        }else{
+            return 0;
+        }
+    }
 }

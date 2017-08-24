@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.a700_15isk.justtalk.MyApp;
 import com.example.a700_15isk.justtalk.bean.AddFriendMessage;
+import com.example.a700_15isk.justtalk.bean.Friend;
 import com.example.a700_15isk.justtalk.bean.User;
 
 import java.util.HashMap;
@@ -228,5 +229,13 @@ public class UserTool {
             }
 
         });
+    }
+
+    public void agreeAddFriend(User friend,SaveListener listener){
+        Friend f = new Friend();
+        User user =BmobUser.getCurrentUser(MyApp.getMyAppContext(), User.class);
+        f.setUser(user);
+        f.setFriendUser(friend);
+        f.save(MyApp.getMyAppContext(),listener);
     }
 }

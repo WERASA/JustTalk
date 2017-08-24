@@ -48,7 +48,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     @Override
     public void onBindViewHolder(ChatListHolder holder, int position) {
         holder.itemView.setTag(position);
-        holder.chatItem.setText(ConversationUtil.queryMessage(bmobIMConversations.get(position), new BmobIMMessage()).getContent());
+        if (ConversationUtil.queryMessage(bmobIMConversations.get(position), new BmobIMMessage())!=null){
+        holder.chatItem.setText(ConversationUtil.queryMessage(bmobIMConversations.get(position), new BmobIMMessage()).getContent());}
         if (bmobIMConversations.get(position).getConversationTitle() != null) {
             holder.chatTitle.setText(bmobIMConversations.get(position).getConversationTitle());
         } else

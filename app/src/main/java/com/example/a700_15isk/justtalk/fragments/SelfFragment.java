@@ -176,7 +176,8 @@ public class SelfFragment extends Fragment {
                 .setBgColor(Color.parseColor("#4a3e5c"))
                 .isDialog(false).build()
         ;
-        pvOptions.setPicker(sexItem);
+        if (sexItem.size()<=2){
+        pvOptions.setPicker(sexItem);}
 
 
     }

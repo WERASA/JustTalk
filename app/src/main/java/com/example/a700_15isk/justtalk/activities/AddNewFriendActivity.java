@@ -68,6 +68,7 @@ public class AddNewFriendActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(0,0);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_new_friend);
         ActivityManager.addActivity(this);
         init();

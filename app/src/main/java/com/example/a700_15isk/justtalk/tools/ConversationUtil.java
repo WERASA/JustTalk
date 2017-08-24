@@ -27,7 +27,8 @@ public class ConversationUtil {
         messageManager.queryMessages(bmobIMMessage, 1, new MessagesQueryListener() {
             @Override
             public void done(List<BmobIMMessage> list, BmobException e) {
-                bmobIMMessage1 = list.get(list.size() - 1);
+                if (list.size()>=1&&list!=null){
+                bmobIMMessage1 = list.get(0);}
 
 
             }

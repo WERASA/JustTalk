@@ -60,6 +60,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="15dp"
                 android:padding="10dp"
+                android:background="@drawable/item_round"
                 app:layout_constraintLeft_toLeftOf="parent"
                 />
 

@@ -14,6 +14,7 @@ import com.example.a700_15isk.justtalk.adapters.HomePagerAdapter;
 import com.example.a700_15isk.justtalk.databinding.ActivityHomePagerBinding;
 import com.example.a700_15isk.justtalk.fragments.ChatsFragment;
 import com.example.a700_15isk.justtalk.fragments.FriendFragment;
+import com.example.a700_15isk.justtalk.fragments.NewFriendFragment;
 import com.example.a700_15isk.justtalk.fragments.SelfFragment;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
 import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
@@ -61,8 +62,10 @@ public class HomePagerActivity extends AppCompatActivity  {
         FriendFragment friendFragment = new FriendFragment();
         SelfFragment selfFragment = new SelfFragment();
         ChatsFragment chatsFragment = new ChatsFragment();
+        NewFriendFragment newFriendFragment=new NewFriendFragment();
         mFragments.add(chatsFragment);
         mFragments.add(friendFragment);
+        mFragments.add(newFriendFragment);
         mFragments.add(selfFragment);
         HomePagerAdapter homePagerAdapter = new HomePagerAdapter(getSupportFragmentManager(), mFragments);
         mBinding.homePager.setAdapter(homePagerAdapter);
@@ -86,7 +89,11 @@ public class HomePagerActivity extends AppCompatActivity  {
                 Builder(getDrawable(R.drawable.ic_people_black_24dp), Color.parseColor("#dd6295")).title("friends")
                 .badgeTitle("NTB")
                 .build());
-
+        models.add(new NavigationTabBar.
+                Model.
+                Builder(getDrawable(R.drawable.ic_group_add_black_24dp), Color.parseColor("#fdbc74")).title("addFriend")
+                .badgeTitle("NTB")
+                .build());
 
         models.add(new NavigationTabBar.
                 Model.Builder(getDrawable(R.drawable.ic_person_black_24dp), Color.parseColor("#76accf"))
