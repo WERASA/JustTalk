@@ -33,7 +33,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         bmobIMConversations.addAll(bmobIMConversations);
         notifyDataSetChanged();
     }
-
+ public void refresh(List<BmobIMConversation> bmobIMConversations){
+     bmobIMConversations.clear();
+     addAll(bmobIMConversations);
+ }
     @Override
     public ChatListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chats, parent, false);

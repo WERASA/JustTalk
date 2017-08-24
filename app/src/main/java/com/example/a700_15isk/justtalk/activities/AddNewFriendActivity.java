@@ -27,6 +27,7 @@ import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.ActivityAddNewFriendBinding;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
 import com.example.a700_15isk.justtalk.tools.UserTool;
+import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +77,12 @@ public class AddNewFriendActivity extends AppCompatActivity {
             setupSharedElementTransitionsButton(this, container);
         }
         container = (ViewGroup) findViewById(R.id.container);
+        mBinding.sendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                query(mBinding.targetId.getText().toString());
+            }
+        });
     }
 
     private void init() {
@@ -85,6 +92,7 @@ public class AddNewFriendActivity extends AppCompatActivity {
 
 
     private void sendAddFriendMessage(BmobIMUserInfo info) {
+        BombInitialize.BombInit();
         BmobIMConversation c = BmobIM.getInstance().startPrivateConversation(info, true, null);
         BmobIMConversation conversation = BmobIMConversation.obtain(BmobIMClient.getInstance(), c);
         AddFriendMessage msg = new AddFriendMessage();
@@ -141,9 +149,16 @@ public class AddNewFriendActivity extends AppCompatActivity {
     public void query(String userName) {
         UserTool.getInstance().queryUsers(userName, 1, new FindListener<User>() {
             @Override
-            public void onSuccess(List<User> list) {
+            public void onSuccess(List<User> list)
+            {if(list!=null&&list.size()>0){
                 BmobIMUserInfo info = new BmobIMUserInfo(list.get(0).getObjectId(), list.get(0).getUsername(), list.get(0).getAvatar());
                 sendAddFriendMessage(info);
+
+
+            }
+            else {
+                Toast.makeText(AddNewFriendActivity.this,"用户不存在",Toast.LENGTH_LONG).show();
+            }
             }
 
             @Override

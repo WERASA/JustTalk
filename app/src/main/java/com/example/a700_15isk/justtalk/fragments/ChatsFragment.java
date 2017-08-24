@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class ChatsFragment extends Fragment {
     FragmentChatsBinding mBinding;
     ChatListAdapter chatListAdapter;
     List<BmobIMConversation> bmobIMConversations;
+    private boolean isRefreshing=false;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,7 @@ public class ChatsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setOnClick();
+        setSwipe();
 
     }
 
@@ -68,40 +71,56 @@ public class ChatsFragment extends Fragment {
         super.onStop();
     }
     private void init() {
-       bmobIMConversations = new ArrayList<>();
+        bmobIMConversations = new ArrayList<>();
         bmobIMConversations.clear();
-        bmobIMConversations = BmobIM.getInstance().loadAllConversation();
+        bmobIMConversations = getConversations();
         if (bmobIMConversations != null && bmobIMConversations.size() > 0) {
             chatListAdapter=new ChatListAdapter(bmobIMConversations);
             mBinding.chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
             mBinding.chatsList.setAdapter(chatListAdapter);
         }
     }
+
+    private void setSwipe(){
+
+        mBinding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                query();
+            }
+        });
+    }
     private List<BmobIMConversation> getConversations(){
-        //添加会话
         List<BmobIMConversation> conversationList = new ArrayList<>();
         conversationList.clear();
         List<BmobIMConversation> list =BmobIM.getInstance().loadAllConversation();
-
-        //添加新朋友会话-获取好友请求表中最新一条记录
         return list;
     }
+
+    public void query(){
+        chatListAdapter.refresh(getConversations());
+        mBinding.swipe.setRefreshing(false);
+    }
+
+
     @Subscribe
     public void onEventMainThread(MessageEvent event){
-        //重新获取本地消息并刷新列表
+
             chatListAdapter.addAll(getConversations());
     }
   public void setOnClick(){
+      if (chatListAdapter!=null){
       chatListAdapter.setOnItemClickListener(new ChatListAdapter.OnItemClickListener() {
           @Override
           public void onItemClick(View view, int position) {
               Intent i=new Intent(getContext(), TalkActivity.class);
               Bundle bundle=new Bundle();
+
               bundle.putSerializable("c",bmobIMConversations.get(position));
               i.putExtras(bundle);
               startActivity(i);
           }
-      });
+      });}
   }
 
 }

@@ -44,12 +44,18 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
             super.onProgress(value);
 
         }
-
+        @Override
+        public void onStart(BmobIMMessage msg) {
+            super.onStart(msg);
+            talkRoomRecycleAdapter.addMessage(msg);
+            mBinding.EditText.setText("");
+            scrollToBottom();
+        }
         @Override
         public void done(BmobIMMessage bmobIMMessage, BmobException e) {
             if (e == null) {
-                talkRoomRecycleAdapter.addMessage(bmobIMMessage);
-                mBinding.EditText.setText("");
+          talkRoomRecycleAdapter.notifyDataSetChanged();
+              //  mBinding.EditText.setText("");
             } else e.printStackTrace();
 
         }
@@ -109,6 +115,8 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
 
             }
         });
+
+
         mBinding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +146,8 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         BmobIMMessage msg = event.getMessage();
         if (c != null && event != null && c.getConversationId().equals(event.getConversation().getConversationId())) //如果是当前会话的消息){//并且不为暂态消息
             if (talkRoomRecycleAdapter.findPosition(msg) < 0) {
-                talkRoomRecycleAdapter.addMessage(msg);
+             talkRoomRecycleAdapter.addMessage(msg);
+                talkRoomRecycleAdapter.notifyDataSetChanged();
                 c.updateReceiveStatus(msg);
                 scrollToBottom();
             } else {

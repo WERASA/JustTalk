@@ -25,6 +25,7 @@ import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.FragmentSelfBinding;
 import com.example.a700_15isk.justtalk.tools.BitMapUtil;
 import com.example.a700_15isk.justtalk.tools.QiNiuUploadTool;
+import com.example.a700_15isk.justtalk.tools.RandomName;
 import com.example.a700_15isk.justtalk.tools.TextUtil;
 import com.example.a700_15isk.justtalk.tools.UserTool;
 
@@ -84,7 +85,7 @@ public class SelfFragment extends Fragment {
             Uri uri = data.getData();
             path = b.getPath(uri,getActivity());
             Log.d("log", path);
-            QiNiuUploadTool.upload(path,userInfo.getNick(),userInfo,getContext());
+            QiNiuUploadTool.upload(path,userInfo.getNick()+ RandomName.getRandomString(5),userInfo,getContext());
             Glide.with(getActivity()).load(path).into(mBinding.avatar);
         }
 

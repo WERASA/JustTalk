@@ -75,7 +75,7 @@ public class TalkRoomRecycleAdapter extends RecyclerView.Adapter {
     }
     public void addMessage(BmobIMMessage bmobIMMessage){
         msgs.add(bmobIMMessage);
-        notifyDataSetChanged();
+
     }
 
     public void addMessages(List<BmobIMMessage> bmobIMMessage){

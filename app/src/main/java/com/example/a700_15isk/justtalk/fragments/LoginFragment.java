@@ -106,6 +106,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     account.setText("");
                     password.setText("");
                 } else {
+                    isLogining=false;
                     Toast.makeText(MyApp.getMyAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
