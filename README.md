@@ -8,7 +8,10 @@
 ![permission](https://github.com/WERASA/JustTalk/blob/master/Image/login.gif)
 ![permission](https://github.com/WERASA/JustTalk/blob/master/Image/sendAdd.png)
 BugList：
+ui太丑
 有一次虚拟机似乎无法接受到消息，，无法重现bug，，，似乎是拦截器没有工作，，
 偶尔会出现服务器爆炸的情况
 没有做聊天的历史纪录，，发送图片的一方在图片传输出后无法看到图片，，
+
+
 
