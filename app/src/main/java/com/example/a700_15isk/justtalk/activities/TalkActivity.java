@@ -3,14 +3,20 @@ package com.example.a700_15isk.justtalk.activities;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 import com.example.a700_15isk.justtalk.Config;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.adapters.TalkRoomRecycleAdapter;
@@ -18,16 +24,17 @@ import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.ActivityTalkBinding;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
 import com.example.a700_15isk.justtalk.tools.BitMapUtil;
-import com.example.a700_15isk.justtalk.tools.QiNiuUploadTool;
 import com.example.a700_15isk.justtalk.tools.RandomName;
 import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
+import cn.bmob.newim.bean.BmobIMFileMessage;
 import cn.bmob.newim.bean.BmobIMImageMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMTextMessage;
@@ -41,12 +48,13 @@ import cn.bmob.v3.exception.BmobException;
 
 
 public class TalkActivity extends AppCompatActivity implements ObseverListener, MessageListHandler {
+
     BmobIMConversation c;
+    String savePhotoPath;
     TalkRoomRecycleAdapter talkRoomRecycleAdapter;
     LinearLayoutManager linearLayoutManager;
     private ActivityTalkBinding mBinding;
     private String path;
-    private User userInfo;
     public MessageSendListener listener = new MessageSendListener() {
 
         @Override
@@ -66,20 +74,27 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         @Override
         public void done(BmobIMMessage bmobIMMessage, BmobException e) {
             if (e == null) {
+                Log.d("path", path);
                 talkRoomRecycleAdapter.notifyDataSetChanged();
                 //  mBinding.EditText.setText("");
             } else e.printStackTrace();
 
         }
     };
+    private User userInfo;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_talk);
         ActivityManager.addActivity(this);
         BombInitialize.BombInit();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
+        savePhotoPath= Environment.getExternalStorageDirectory().getPath();;
+        savePhotoPath=savePhotoPath+ "/"+RandomName.getRandomString(2)+".png";
         init();
     }
 
@@ -115,39 +130,9 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         mBinding.talkRoomBar.setTitleTextColor(getResources().getColor(R.color.textColor));
         mBinding.talkRoomBar.setSubtitleTextColor(getResources().getColor(R.color.textColor));
         mBinding.talkRoomBar.setNavigationIcon(R.mipmap.ic_back);
+        setListener();
 
-        mBinding.talkRoomBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (userInfo != null) {
-                    Intent i = new Intent(TalkActivity.this, HomePagerActivity.class);
-                    i.putExtra("tag", 1);
-                    startActivity(i);
-                } else {
-                    Intent i = new Intent(TalkActivity.this, HomePagerActivity.class);
-                    i.putExtra("tag", 1);
-                    startActivity(i);
-                }
-
-            }
-        });
-
-
-        mBinding.send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage();
-            }
-        });
-
-        mBinding.sendImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openAlbum();
-            }
-        });
     }
-
 
     private void sendMessage() {
         String text = mBinding.EditText.getText().toString();
@@ -161,10 +146,12 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         msg.setExtraMap(map);
         c.sendMessage(msg, listener);
     }
-
-
-    public void sendImageMessage(String path){
-        BmobIMImageMessage image =new BmobIMImageMessage(path);
+public void sendImageFile(String filePath){
+    BmobIMFileMessage file =new BmobIMFileMessage(filePath);
+   c.sendMessage(file,listener);
+}
+    public void sendImageMessage(String path) {
+        BmobIMImageMessage image = new BmobIMImageMessage(path);
         c.sendMessage(image, listener);
     }
 
@@ -180,34 +167,34 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
                 Log.d("tag", "null");
             }
     }
+
     private void openAlbum() {
-        Intent intent=new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, Config.OPEN_ALBUM_CODE);
     }
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data==null){
-            Toast.makeText(this,"Empty Avatar",Toast.LENGTH_SHORT).show();
-        }
-        else {
-            BitMapUtil bitMapUtil=new BitMapUtil();
-            Uri uri = data.getData();
-            path = bitMapUtil.getPath(uri,this);
-            Log.d("log", path);
-            sendImageMessage(path);
+        if (requestCode == Config.OPEN_ALBUM_CODE) {
+            if (data == null) {
+                Toast.makeText(this, "Empty Image", Toast.LENGTH_SHORT).show();
+            } else {
+                BitMapUtil bitMapUtil = new BitMapUtil();
+                Uri uri = data.getData();
+                path = bitMapUtil.getPath(uri, this);
+                Log.d("log", path);
+                sendImageMessage(path);
+            }
         }
 
+
     }
+
     private void scrollToBottom() {
         linearLayoutManager.scrollToPositionWithOffset(talkRoomRecycleAdapter.getItemCount() - 1, 0);
     }
-
-
 
     @Override
     public void onMessageReceive(List<MessageEvent> list) {
@@ -228,5 +215,41 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
     protected void onPause() {
         BmobIM.getInstance().removeMessageListHandler(this);
         super.onPause();
+    }
+
+
+
+    public void setListener() {
+
+
+        mBinding.talkRoomBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userInfo != null) {
+                    Intent i = new Intent(TalkActivity.this, HomePagerActivity.class);
+                    i.putExtra("tag", 1);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(TalkActivity.this, HomePagerActivity.class);
+                    i.putExtra("tag", 0);
+                    startActivity(i);
+                }
+
+            }
+        });
+        mBinding.send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage();
+            }
+        });
+        mBinding.sendImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAlbum();
+            }
+        });
+
+
     }
 }

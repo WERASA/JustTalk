@@ -25,14 +25,14 @@
 
 
         <ImageView
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
             android:id="@+id/tv_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
             android:textColor="@color/textColor"
-            android:maxWidth="225.0dip"
-            android:minWidth="80dp"
             android:padding="15dp"
             android:background="@drawable/item_round"
             app:layout_constraintLeft_toRightOf="@+id/avatar"

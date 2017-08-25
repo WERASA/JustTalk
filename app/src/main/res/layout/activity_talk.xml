@@ -17,21 +17,31 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"></android.support.v7.widget.Toolbar>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:background="@color/itemBackground"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginBottom="-14dp">
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/sendImage"
                 android:src="@drawable/ic_photo_library_black_24dp"/>
-        </LinearLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_location_on_black_24dp"
+                android:layout_centerInParent="true"
+              />
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/talkList"
@@ -50,9 +60,9 @@
 
             android:background="@drawable/item_round"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintLeft_toLeftOf="@+id/linearLayout"
-            app:layout_constraintRight_toRightOf="@+id/linearLayout">
+            app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+            app:layout_constraintLeft_toLeftOf="@+id/relativeLayout"
+            app:layout_constraintRight_toRightOf="@+id/relativeLayout">
 
             <EditText
 
