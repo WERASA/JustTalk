@@ -34,6 +34,7 @@
             android:maxWidth="225.0dip"
             android:minWidth="80dp"
             android:padding="15dp"
+            android:gravity="center"
             android:background="@drawable/item_round"
             android:text="11111111111111111111111111111111111111111111111"
             app:layout_constraintLeft_toRightOf="@+id/avatar"

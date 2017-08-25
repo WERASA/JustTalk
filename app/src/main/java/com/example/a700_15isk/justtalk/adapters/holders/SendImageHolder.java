@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.a700_15isk.justtalk.MyApp;
 import com.example.a700_15isk.justtalk.R;
 
 import java.text.SimpleDateFormat;
@@ -41,7 +42,7 @@ ImageView sendImage;
     final BmobIMUserInfo info = msg.getBmobIMUserInfo();
     final BmobIMImageMessage message = BmobIMImageMessage.buildFromDB(true, msg);
     int status =message.getSendStatus();
-    Glide.with(context).load(message.getContent()).into(sendImage);
+    Glide.with(MyApp.getMyAppContext()).load(message.getContent()).into(sendImage);
 
 }
 }
