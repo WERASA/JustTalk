@@ -37,7 +37,8 @@ public class TextReceiverHolder extends BaseRecyclerHolder {
         final BmobIMUserInfo info = message.getBmobIMUserInfo();
         String content = message.getContent();
         receiveMsg.setText(content);
-           Glide.with(context).load(info.getAvatar()).into(userAvatar);
+        if (info.getAvatar()!=null&&!info.getAvatar().equals("")){
+           Glide.with(context).load(info.getAvatar()).into(userAvatar);}
 
     }
 }
