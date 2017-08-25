@@ -41,7 +41,6 @@ public class TextSendHolder extends BaseRecyclerHolder {
         send_text.setText(content);
         int status=message.getSendStatus();
         if (BmobIMSendStatus.SENDED.getStatus()== status){
-
         }
     }
 
