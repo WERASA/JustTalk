@@ -2,6 +2,7 @@ package com.example.a700_15isk.justtalk.tools;
 
 import com.example.a700_15isk.justtalk.bean.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,16 +20,16 @@ import cn.bmob.v3.exception.BmobException;
  */
 
 public class ConversationUtil {
-    static BmobIMMessage bmobIMMessage1;
+    static  List<BmobIMMessage>bmobIMMessage1=new ArrayList<>();
 
-    public static BmobIMMessage queryMessage(final BmobIMConversation bmobIMConversation, BmobIMMessage bmobIMMessage) {
+    public static List<BmobIMMessage> queryMessage(final BmobIMConversation bmobIMConversation, BmobIMMessage bmobIMMessage,int limit) {
         BmobIMConversation messageManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), bmobIMConversation);
 
-        messageManager.queryMessages(bmobIMMessage, 1, new MessagesQueryListener() {
+        messageManager.queryMessages(bmobIMMessage, limit, new MessagesQueryListener() {
             @Override
             public void done(List<BmobIMMessage> list, BmobException e) {
                 if (list.size()>=1&&list!=null){
-                bmobIMMessage1 = list.get(0);}
+                bmobIMMessage1=list;}
 
 
             }

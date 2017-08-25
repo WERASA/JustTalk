@@ -29,32 +29,41 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         this.bmobIMConversations = bmobIMConversations;
     }
 
+
+
+
     public void addAll(List<BmobIMConversation> bmobIMConversations) {
+        if (bmobIMConversations!=null){
         bmobIMConversations.addAll(bmobIMConversations);
-        notifyDataSetChanged();
+        notifyDataSetChanged();}
     }
- public void refresh(List<BmobIMConversation> bmobIMConversations){
-     bmobIMConversations.clear();
-     addAll(bmobIMConversations);
- }
+
+    public void refresh(List<BmobIMConversation> bmobIMConversations) {
+        bmobIMConversations.clear();
+        addAll(bmobIMConversations);
+    }
+
     @Override
     public ChatListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chats, parent, false);
         view.setOnClickListener(this);
-        ChatListHolder c = new ChatListHolder(view);
-        return c;
+        ChatListHolder chatListHolder = new ChatListHolder(view);
+        return chatListHolder;
     }
+
 
     @Override
     public void onBindViewHolder(ChatListHolder holder, int position) {
         holder.itemView.setTag(position);
-        if (ConversationUtil.queryMessage(bmobIMConversations.get(position), new BmobIMMessage())!=null){
-        holder.chatItem.setText(ConversationUtil.queryMessage(bmobIMConversations.get(position), new BmobIMMessage()).getContent());}
+        if (ConversationUtil.queryMessage(bmobIMConversations.get(position), new BmobIMMessage(),1) != null
+                &&ConversationUtil.queryMessage(bmobIMConversations.get(position), new BmobIMMessage(),1) .size()>0) {
+            holder.chatItem.setText(ConversationUtil.queryMessage(bmobIMConversations.get(position), new BmobIMMessage(),1).get(0).getContent());
+        }
         if (bmobIMConversations.get(position).getConversationTitle() != null) {
             holder.chatTitle.setText(bmobIMConversations.get(position).getConversationTitle());
         } else
             holder.chatTitle.setText("会话" + position);
-        if (bmobIMConversations.get(position).getConversationIcon() != null) {
+        if (bmobIMConversations.get(position).getConversationIcon() != null&&!bmobIMConversations.get(position).getConversationIcon().equals("")) {
             Glide.with(MyApp.getMyAppContext())
                     .load(bmobIMConversations
                             .get(position).getConversationIcon()).

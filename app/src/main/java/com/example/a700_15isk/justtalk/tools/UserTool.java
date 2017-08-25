@@ -23,6 +23,7 @@ import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.SaveListener;
@@ -237,5 +238,10 @@ public class UserTool {
         f.setUser(user);
         f.setFriendUser(friend);
         f.save(MyApp.getMyAppContext(),listener);
+    }
+
+    public void deleteFriend(Friend f,DeleteListener listener){
+        Friend friend =new Friend();
+        friend.delete(MyApp.getMyAppContext(),f.getObjectId(),listener);
     }
 }

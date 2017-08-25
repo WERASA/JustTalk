@@ -44,13 +44,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login_paper=(ViewPager)findViewById(R.id.login_pager);
         LoginFragment loginFragment=new LoginFragment();
         RegisterFragment registerFragment=new RegisterFragment();
-        mFragments.add(registerFragment);
         mFragments.add(loginFragment);
+        mFragments.add(registerFragment);
         FragmentManager fragmentManager=getSupportFragmentManager();
         LoginPagerAdapter loginPagerAdapter =new LoginPagerAdapter(fragmentManager,mFragments);
         login_paper.setAdapter(loginPagerAdapter);
-
-
 
     }
 

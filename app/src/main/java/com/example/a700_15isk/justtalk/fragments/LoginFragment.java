@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,10 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a700_15isk.justtalk.MyApp;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.activities.HomePagerActivity;
-import com.example.a700_15isk.justtalk.MyApp;
-import com.example.a700_15isk.justtalk.tools.TextUtil;
 import com.example.a700_15isk.justtalk.tools.UserTool;
 import com.example.a700_15isk.justtalk.views.LoginCircle;
 
@@ -43,7 +43,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private ProgressBar progressBar;
     private String userName;
     private String mPassword;
-    private boolean isLogining=false ;
+    private boolean isLogining = false;
 
     @Nullable
     @Override
@@ -70,8 +70,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginCircle.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         Register.setOnClickListener(this);
-        TextUtil.banEnter(password);
-        TextUtil.banEnter(account);
+        getSave();
 
     }
 
@@ -80,7 +79,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login:
-
                 userLogin();
                 break;
 
@@ -89,28 +87,49 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     public void userLogin() {
-        if (isLogining) {
-            return;
-        }
-        isLogining=true;
         userName = account.getText().toString();
         mPassword = password.getText().toString();
         UserTool.getInstance().login(userName, mPassword, new LogInListener() {
             @Override
             public void done(Object o, BmobException e) {
                 if (e == null) {
-                    isLogining=false;
                     BmobUser user = (BmobUser) o;
                     BmobIM.getInstance().updateUserInfo(new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getEmail()));
                     startLoginAnimator();
+                    saveLogin(userName,mPassword);
                     account.setText("");
                     password.setText("");
                 } else {
-                    isLogining=false;
+                    isLogining = false;
                     Toast.makeText(MyApp.getMyAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, getContext());
+    }
+
+    private void saveLogin(String account, String password) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginUser", getContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("account",account);
+        editor.putString("password",password);
+        editor.apply();
+    }
+
+    private void getSave(){
+        String password;
+        String account;
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginUser", getContext().MODE_PRIVATE);
+        account=sharedPreferences.getString("account","");
+        password=sharedPreferences.getString("password","");
+        if (account!=null&&!account.equals(""))
+        {
+            this.account.setText(account);
+        }
+        if (password!=null&&!password.equals(""))
+        {
+            this.password.setText(password);
+        }
+
     }
 
 

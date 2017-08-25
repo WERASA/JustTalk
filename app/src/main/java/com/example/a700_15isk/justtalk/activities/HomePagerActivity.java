@@ -49,7 +49,6 @@ public class HomePagerActivity extends AppCompatActivity  {
     protected void onDestroy() {
         super.onDestroy();
         ActivityManager.removeActivity(this);
-
         BmobIM.getInstance().clear();
     }
 

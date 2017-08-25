@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
+import com.example.a700_15isk.justtalk.Config;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.bean.SexBean;
 import com.example.a700_15isk.justtalk.bean.User;
@@ -47,7 +48,6 @@ public class SelfFragment extends Fragment {
     private boolean sex;
     private String userEmail;
     private ArrayList<SexBean> sexItem = new ArrayList<>();
-   private int OPEN_ALBUM_CODE=1;
     private String path;
 
 
@@ -71,7 +71,7 @@ public class SelfFragment extends Fragment {
     private void openAlbum() {
         Intent intent=new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        startActivityForResult(intent,OPEN_ALBUM_CODE);
+        startActivityForResult(intent, Config.OPEN_ALBUM_CODE);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class SelfFragment extends Fragment {
         if (userInfo.getNick() != null) {
             mBinding.nickName.setText(userInfo.getNick());
         }
-        if (userInfo.getAvatar()!=null){
+        if (userInfo.getAvatar()!=null&&!userInfo.getAvatar().equals("")){
             Glide.with(getActivity()).load(userInfo.getAvatar()).into(mBinding.avatar);
         }
         mBinding.sex.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +137,7 @@ public class SelfFragment extends Fragment {
 
 
         setTextChangeListen();
-        banEnter();
+
 
     }
 
@@ -196,9 +196,5 @@ public class SelfFragment extends Fragment {
     }
 
 
-    public void banEnter() {
-        TextUtil.banEnter(mBinding.age);
-        TextUtil.banEnter(mBinding.eMail);
-        TextUtil.banEnter(mBinding.nickName);
-    }
+
 }

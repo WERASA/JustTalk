@@ -89,18 +89,16 @@ public class JustTalkMessageHandler extends BmobIMMessageHandler {
             NewFriend friend = AddFriendMessage.convert(msg);
             //本地好友请求表做下校验，本地没有的才允许显示通知栏--有可能离线消息会有些重复
             long id = NewFriendManager.getInstance(context).insertOrUpdateNewFriend(friend);
-            if(id>0){
-                showAddNotify(friend);
-            }
-        }else if(type.equals("agree")){//接收到的对方同意添加自己为好友,此时需要做的事情：1、添加对方为好友，2、显示通知
+
+       if(type.equals("agree")){//接收到的对方同意添加自己为好友,此时需要做的事情：1、添加对方为好友，2、显示通知
             AgreeAddFriendMessage agree = AgreeAddFriendMessage.convert(msg);
             addFriend(agree.getFromId());//添加消息的发送方为好友
             //这里应该也需要做下校验--来检测下是否已经同意过该好友请求，我这里省略了
-            showAgreeNotify(info,agree);
+
         }else{
             Toast.makeText(context,"接收到的自定义消息："+msg.getMsgType() + "," + msg.getContent() + "," + msg.getExtra(),Toast.LENGTH_SHORT).show();
         }
-    }
+    }}
 
     private void addFriend(String uid){
         User user =new User();
@@ -117,20 +115,7 @@ public class JustTalkMessageHandler extends BmobIMMessageHandler {
             }
         });
     }
-    private void showAddNotify(NewFriend friend){
-        Intent pendingIntent = new Intent(context, HomePagerActivity.class);
-        pendingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        //这里可以是应用图标，也可以将聊天头像转成bitmap
-        Bitmap largetIcon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
-        BmobNotificationManager.getInstance(context).showNotification(largetIcon,
-                friend.getName(), friend.getMsg(), friend.getName() + "请求添加你为朋友", pendingIntent);
-    }
-    private void showAgreeNotify(BmobIMUserInfo info,AgreeAddFriendMessage agree){
-        Intent pendingIntent = new Intent(context, HomePagerActivity.class);
-        pendingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        Bitmap largetIcon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
-        BmobNotificationManager.getInstance(context).showNotification(largetIcon,info.getName(),agree.getMsg(),agree.getMsg(),pendingIntent);
-    }
+
 
 }
 

@@ -18,14 +18,7 @@ public class TextUtil {
     public static  int CHANGE_NICK=1;
     public static  int CHANGE_EMAIL=2;
 
-    public static void banEnter(EditText editText){
-         editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                                      return(event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
-    }
+
 
     public static void editTextTool(final EditText editText, final int Type, final User user, final Context context){
         editText.addTextChangedListener(new TextWatcher() {

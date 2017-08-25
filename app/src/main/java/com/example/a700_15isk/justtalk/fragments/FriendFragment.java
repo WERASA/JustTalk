@@ -78,6 +78,8 @@ public class FriendFragment extends Fragment implements View.OnClickListener {
                         setOnItemClick();
                     }
                 }
+                else
+                    mBinding.emptyText.setText("暂无联系人");
             }
             @Override
             public void onError(int i, String s) {}
@@ -93,13 +95,12 @@ public class FriendFragment extends Fragment implements View.OnClickListener {
                 Intent intent = new Intent(getActivity(), TalkActivity.class);
                 Bundle bundle = new Bundle();
                 User user = friends.get(position).getFriendUser();
-
                 info = new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getAvatar());
                 bundle.putSerializable("user", friends.get(position).getFriendUser());
                 intent.putExtras(bundle);
                 BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
                 Bundle bundle1 = new Bundle();
-                bundle1.putSerializable("c", conversationEntrance);
+                bundle1.putSerializable("conversation", conversationEntrance);
                 intent.putExtras(bundle1);
                 startActivity(intent);
             }
@@ -112,7 +113,6 @@ public class FriendFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab_morph:
-
                 User user= BmobUser.getCurrentUser(getContext(),User.class);
                 Intent login = AddNewFriendActivity.getStartIntent(getActivity(), AddNewFriendActivity.MORPH_TYPE_BUTTON);
                 Bundle bundle=new Bundle();

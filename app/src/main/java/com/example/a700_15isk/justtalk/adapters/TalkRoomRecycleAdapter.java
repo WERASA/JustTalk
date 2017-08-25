@@ -11,8 +11,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.adapters.holders.BaseRecyclerHolder;
-import com.example.a700_15isk.justtalk.adapters.holders.textholder.TextReceiverHolder;
-import com.example.a700_15isk.justtalk.adapters.holders.textholder.TextSendHolder;
+
+import com.example.a700_15isk.justtalk.adapters.holders.TextReceiverHolder;
+import com.example.a700_15isk.justtalk.adapters.holders.TextSendHolder;
 import com.example.a700_15isk.justtalk.bean.MsgBean;
 import com.example.a700_15isk.justtalk.bean.User;
 

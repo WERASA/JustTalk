@@ -47,7 +47,7 @@ public class FriendsRecycleAdapter extends RecyclerView.Adapter<FriendsRecycleAd
             holder.userAccount.setText(friends.get(position).getFriendUser().getUsername());
         }
 
-        if (friends.get(position).getFriendUser().getAvatar() != null) {
+        if (friends.get(position).getFriendUser().getAvatar() != null&&!friends.get(position).getFriendUser().getAvatar().equals("")) {
             Glide.with(MyApp.getMyAppContext()).load(friends.get(position).getFriendUser().getAvatar()).into(holder.userAvatar);
         }
     }

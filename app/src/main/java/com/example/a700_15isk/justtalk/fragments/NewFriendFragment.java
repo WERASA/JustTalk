@@ -39,7 +39,12 @@ public class NewFriendFragment extends Fragment {
     public void init() {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
         mBinding.newFriendList.setLayoutManager(linearLayoutManager);
-        mBinding.newFriendList.setAdapter(new NewFriendAdapter(NewFriendManager.getInstance(MyApp.getMyAppContext()).getAllNewFriend()));
+        List<NewFriend>newFriends=NewFriendManager.getInstance(MyApp.getMyAppContext()).getAllNewFriend();
+
+        if (newFriends!=null&&newFriends.size()>0){
+        mBinding.newFriendList.setAdapter(new NewFriendAdapter(newFriends));}
+        else
+            mBinding.emptyText.setText("暂无新好友");
 
     }
 

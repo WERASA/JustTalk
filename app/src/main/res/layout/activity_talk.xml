@@ -26,7 +26,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
-
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/sendImage"
+                android:src="@drawable/ic_photo_library_black_24dp"/>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

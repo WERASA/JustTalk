@@ -103,6 +103,7 @@ public class AddNewFriendActivity extends AppCompatActivity {
         map.put("avatar", currentUser.getAvatar());
         map.put("uid", currentUser.getObjectId());
         msg.setExtraMap(map);
+        msg.setContent(mBinding.messageContent.getText().toString());
         conversation.sendMessage(msg, new MessageSendListener() {
             @Override
             public void done(BmobIMMessage msg, BmobException e) {

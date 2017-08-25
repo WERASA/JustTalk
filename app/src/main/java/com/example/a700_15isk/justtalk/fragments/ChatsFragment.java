@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.activities.TalkActivity;
 import com.example.a700_15isk.justtalk.adapters.ChatListAdapter;
-import com.example.a700_15isk.justtalk.bean.Friend;
 import com.example.a700_15isk.justtalk.databinding.FragmentChatsBinding;
 
 import java.util.ArrayList;
@@ -34,7 +33,8 @@ public class ChatsFragment extends Fragment {
     FragmentChatsBinding mBinding;
     ChatListAdapter chatListAdapter;
     List<BmobIMConversation> bmobIMConversations;
-    private boolean isRefreshing=false;
+    private boolean isRefreshing = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +45,6 @@ public class ChatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_chats, container, false);
-        init();
-
         return mBinding.getRoot();
     }
 
@@ -54,8 +52,10 @@ public class ChatsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init();
         setOnClick();
         setSwipe();
+
 
     }
 
@@ -70,18 +70,20 @@ public class ChatsFragment extends Fragment {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
     private void init() {
         bmobIMConversations = new ArrayList<>();
         bmobIMConversations.clear();
         bmobIMConversations = getConversations();
         if (bmobIMConversations != null && bmobIMConversations.size() > 0) {
-            chatListAdapter=new ChatListAdapter(bmobIMConversations);
+            chatListAdapter = new ChatListAdapter(bmobIMConversations);
             mBinding.chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
             mBinding.chatsList.setAdapter(chatListAdapter);
         }
+
     }
 
-    private void setSwipe(){
+    private void setSwipe() {
 
         mBinding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -90,38 +92,39 @@ public class ChatsFragment extends Fragment {
             }
         });
     }
-    private List<BmobIMConversation> getConversations(){
+
+    private List<BmobIMConversation> getConversations() {
         List<BmobIMConversation> conversationList = new ArrayList<>();
         conversationList.clear();
-        List<BmobIMConversation> list =BmobIM.getInstance().loadAllConversation();
+        List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
         return list;
     }
 
-    public void query(){
+    public void query() {
         chatListAdapter.refresh(getConversations());
         mBinding.swipe.setRefreshing(false);
     }
 
 
     @Subscribe
-    public void onEventMainThread(MessageEvent event){
-
-            chatListAdapter.addAll(getConversations());
+    public void onEventMainThread(MessageEvent event) {
+        chatListAdapter.addAll(getConversations());
     }
-  public void setOnClick(){
-      if (chatListAdapter!=null){
-      chatListAdapter.setOnItemClickListener(new ChatListAdapter.OnItemClickListener() {
-          @Override
-          public void onItemClick(View view, int position) {
-              Intent i=new Intent(getContext(), TalkActivity.class);
-              Bundle bundle=new Bundle();
 
-              bundle.putSerializable("c",bmobIMConversations.get(position));
-              i.putExtras(bundle);
-              startActivity(i);
-          }
-      });}
-  }
+    public void setOnClick() {
+        if (chatListAdapter != null) {
+            chatListAdapter.setOnItemClickListener(new ChatListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent i = new Intent(getContext(), TalkActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("conversation", bmobIMConversations.get(position));
+                    i.putExtras(bundle);
+                    startActivity(i);
+                }
+            });
+        }
+    }
 
 }
 

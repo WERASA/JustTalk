@@ -133,6 +133,11 @@ public class NewFriendAdapter extends RecyclerView.Adapter<NewFriendAdapter.NewF
             }
         });
     }
+
+
+
+
+
     private void sendAgreeAddFriendMessage(final NewFriend add,final SaveListener listener){
         BmobIMUserInfo info = new BmobIMUserInfo(add.getUid(), add.getName(), add.getAvatar());
         //如果为true,则表明为暂态会话，也就是说该会话仅执行发送消息的操作，不会保存会话和消息到本地数据库中

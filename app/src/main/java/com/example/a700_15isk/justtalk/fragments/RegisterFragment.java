@@ -68,8 +68,7 @@ private  boolean isRegister=false;
         loginCircle.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         login.setOnClickListener(this);
-        TextUtil.banEnter(account);
-        TextUtil.banEnter(password);
+
 
     }
 
@@ -102,6 +101,7 @@ private  boolean isRegister=false;
                     account.setText("");
                     password.setText("");
                 } else {
+                    isRegister=false;
                     Toast.makeText(MyApp.getMyAppContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }

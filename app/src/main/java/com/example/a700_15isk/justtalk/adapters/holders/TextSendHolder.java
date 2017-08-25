@@ -1,4 +1,4 @@
-package com.example.a700_15isk.justtalk.adapters.holders.textholder;
+package com.example.a700_15isk.justtalk.adapters.holders;
 
 import android.content.Context;
 import android.view.View;
@@ -21,15 +21,14 @@ import cn.bmob.newim.bean.BmobIMUserInfo;
 public class TextSendHolder extends BaseRecyclerHolder {
     TextView send_text;
     ProgressBar progressBar;
-    BmobIMConversation c;
+    BmobIMConversation conversation;
     Context context;
 
 
-    public TextSendHolder(ViewGroup parent, Context context, BmobIMConversation c) {
+    public TextSendHolder(ViewGroup parent, Context context, BmobIMConversation conversation) {
         super(context,parent,R.layout.item_send_msg);
-        progressBar=(ProgressBar) itemView.findViewById(R.id.progress);
         send_text=(TextView) itemView.findViewById(R.id.tv_message);
-        this.c = c;
+        this.conversation = conversation;
         this.context = context;
     }
 
@@ -42,7 +41,7 @@ public class TextSendHolder extends BaseRecyclerHolder {
         send_text.setText(content);
         int status=message.getSendStatus();
         if (BmobIMSendStatus.SENDED.getStatus()== status){
-                   progressBar.setVisibility(View.GONE);
+
         }
     }
 

@@ -54,8 +54,8 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         @Override
         public void done(BmobIMMessage bmobIMMessage, BmobException e) {
             if (e == null) {
-          talkRoomRecycleAdapter.notifyDataSetChanged();
-              //  mBinding.EditText.setText("");
+                talkRoomRecycleAdapter.notifyDataSetChanged();
+                //  mBinding.EditText.setText("");
             } else e.printStackTrace();
 
         }
@@ -81,7 +81,7 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
 
         Intent intent = this.getIntent();
         userInfo = (User) intent.getSerializableExtra("user");
-        c = BmobIMConversation.obtain(BmobIMClient.getInstance(), (BmobIMConversation) intent.getSerializableExtra("c"));
+        c = BmobIMConversation.obtain(BmobIMClient.getInstance(), (BmobIMConversation) intent.getSerializableExtra("conversation"));
         linearLayoutManager = new LinearLayoutManager(this);
         talkRoomRecycleAdapter = new TalkRoomRecycleAdapter(this, c);
         mBinding.talkList.setAdapter(talkRoomRecycleAdapter);
@@ -146,7 +146,7 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         BmobIMMessage msg = event.getMessage();
         if (c != null && event != null && c.getConversationId().equals(event.getConversation().getConversationId())) //如果是当前会话的消息){//并且不为暂态消息
             if (talkRoomRecycleAdapter.findPosition(msg) < 0) {
-             talkRoomRecycleAdapter.addMessage(msg);
+                talkRoomRecycleAdapter.addMessage(msg);
                 talkRoomRecycleAdapter.notifyDataSetChanged();
                 c.updateReceiveStatus(msg);
                 scrollToBottom();

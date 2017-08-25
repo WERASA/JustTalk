@@ -1,4 +1,4 @@
-package com.example.a700_15isk.justtalk.adapters.holders.textholder;
+package com.example.a700_15isk.justtalk.adapters.holders;
 
 import android.content.Context;
 import android.view.View;

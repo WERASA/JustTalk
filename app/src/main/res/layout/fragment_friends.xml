@@ -7,7 +7,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background">
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textColor="@color/textColor"
+    android:textSize="20sp"
+    android:gravity="center"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -24,8 +29,7 @@
             android:layout_gravity="bottom|end"
             android:src="@drawable/ic_add_black_80dp"
             app:fabSize="normal"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_margin="20dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
