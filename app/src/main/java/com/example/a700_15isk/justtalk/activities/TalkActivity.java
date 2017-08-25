@@ -2,17 +2,24 @@ package com.example.a700_15isk.justtalk.activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.a700_15isk.justtalk.Config;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.adapters.TalkRoomRecycleAdapter;
 import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.ActivityTalkBinding;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
+import com.example.a700_15isk.justtalk.tools.BitMapUtil;
+import com.example.a700_15isk.justtalk.tools.QiNiuUploadTool;
+import com.example.a700_15isk.justtalk.tools.RandomName;
 import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
 
 import java.util.HashMap;
@@ -21,6 +28,7 @@ import java.util.Map;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
+import cn.bmob.newim.bean.BmobIMImageMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMTextMessage;
 import cn.bmob.newim.core.BmobIMClient;
@@ -37,6 +45,8 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
     TalkRoomRecycleAdapter talkRoomRecycleAdapter;
     LinearLayoutManager linearLayoutManager;
     private ActivityTalkBinding mBinding;
+    private String path;
+    private User userInfo;
     public MessageSendListener listener = new MessageSendListener() {
 
         @Override
@@ -44,6 +54,7 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
             super.onProgress(value);
 
         }
+
         @Override
         public void onStart(BmobIMMessage msg) {
             super.onStart(msg);
@@ -51,6 +62,7 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
             mBinding.EditText.setText("");
             scrollToBottom();
         }
+
         @Override
         public void done(BmobIMMessage bmobIMMessage, BmobException e) {
             if (e == null) {
@@ -60,7 +72,7 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
 
         }
     };
-    private User userInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,11 +119,15 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         mBinding.talkRoomBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent i = new Intent(TalkActivity.this, HomePagerActivity.class);
-                i.putExtra("tag", 1);
-                startActivity(i);
-
+                if (userInfo != null) {
+                    Intent i = new Intent(TalkActivity.this, HomePagerActivity.class);
+                    i.putExtra("tag", 1);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(TalkActivity.this, HomePagerActivity.class);
+                    i.putExtra("tag", 1);
+                    startActivity(i);
+                }
 
             }
         });
@@ -123,11 +139,17 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
                 sendMessage();
             }
         });
+
+        mBinding.sendImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAlbum();
+            }
+        });
     }
 
 
     private void sendMessage() {
-
         String text = mBinding.EditText.getText().toString();
         if (text.isEmpty()) {
             return;
@@ -138,8 +160,12 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         map.put("level", "1");
         msg.setExtraMap(map);
         c.sendMessage(msg, listener);
+    }
 
 
+    public void sendImageMessage(String path){
+        BmobIMImageMessage image =new BmobIMImageMessage(path);
+        c.sendMessage(image, listener);
     }
 
     private void addMessage2Chat(MessageEvent event) {
@@ -154,15 +180,37 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
                 Log.d("tag", "null");
             }
     }
+    private void openAlbum() {
+        Intent intent=new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, Config.OPEN_ALBUM_CODE);
+    }
 
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data==null){
+            Toast.makeText(this,"Empty Avatar",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            BitMapUtil bitMapUtil=new BitMapUtil();
+            Uri uri = data.getData();
+            path = bitMapUtil.getPath(uri,this);
+            Log.d("log", path);
+            sendImageMessage(path);
+        }
+
+    }
     private void scrollToBottom() {
         linearLayoutManager.scrollToPositionWithOffset(talkRoomRecycleAdapter.getItemCount() - 1, 0);
     }
 
+
+
     @Override
     public void onMessageReceive(List<MessageEvent> list) {
-
         for (int i = 0; i < list.size(); i++) {
             addMessage2Chat(list.get(i));
         }

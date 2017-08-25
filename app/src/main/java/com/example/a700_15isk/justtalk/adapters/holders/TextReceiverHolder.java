@@ -26,7 +26,6 @@ public class TextReceiverHolder extends BaseRecyclerHolder {
 
     public TextReceiverHolder(ViewGroup root, Context context) {
         super(context,root,R.layout.item_rec_msg);
-
         this.context=context;
         userAvatar=(CircleImageView)itemView.findViewById(R.id.avatar);
         receiveMsg=(TextView)itemView.findViewById(R.id.tv_message);

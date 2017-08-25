@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.adapters.holders.BaseRecyclerHolder;
 
+import com.example.a700_15isk.justtalk.adapters.holders.ReceiveImageHolder;
+import com.example.a700_15isk.justtalk.adapters.holders.SendImageHolder;
 import com.example.a700_15isk.justtalk.adapters.holders.TextReceiverHolder;
 import com.example.a700_15isk.justtalk.adapters.holders.TextSendHolder;
 import com.example.a700_15isk.justtalk.bean.MsgBean;
@@ -34,6 +36,8 @@ public class TalkRoomRecycleAdapter extends RecyclerView.Adapter {
     List<BmobIMMessage> msgs=new ArrayList<>();
     private final int TYPE_RECEIVER_TXT = 0;
     private final int TYPE_SEND_TXT = 1;
+    private final int TYPE_SEND_IMAGE = 2;
+    private final int TYPE_RECEIVER_IMAGE = 3;
     BmobIMConversation c;
     private String currentUid="";
     public TalkRoomRecycleAdapter(Context context, BmobIMConversation c) {
@@ -88,7 +92,9 @@ public class TalkRoomRecycleAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         BmobIMMessage message=msgs.get(position);
-        if(message.getMsgType().equals(BmobIMMessageType.TEXT.getType())){
+        if(message.getMsgType().equals(BmobIMMessageType.IMAGE.getType())){
+            return message.getFromId().equals(currentUid) ? TYPE_SEND_IMAGE: TYPE_RECEIVER_IMAGE;
+        }else if(message.getMsgType().equals(BmobIMMessageType.TEXT.getType())){
             return message.getFromId().equals(currentUid) ? TYPE_SEND_TXT: TYPE_RECEIVER_TXT;
         }
         return -1;
@@ -100,6 +106,10 @@ public class TalkRoomRecycleAdapter extends RecyclerView.Adapter {
             return new TextReceiverHolder(parent,parent.getContext());
         }else if (viewType==TYPE_SEND_TXT){
             return new TextSendHolder(parent,parent.getContext(),c);
+        } else if (viewType == TYPE_RECEIVER_IMAGE) {
+            return new ReceiveImageHolder(parent.getContext(), parent);
+        }else if (viewType == TYPE_SEND_IMAGE) {
+            return new SendImageHolder(parent.getContext(), parent,c);
         }
         return null;
     }
