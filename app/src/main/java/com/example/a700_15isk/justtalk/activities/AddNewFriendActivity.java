@@ -72,6 +72,7 @@ public class AddNewFriendActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_new_friend);
         ActivityManager.addActivity(this);
         init();
+        BombInitialize.BombInit();
         setupSharedElementTransitionsButton(this, container);
         String type = getIntent().getStringExtra(EXTRA_MORPH_TYPE);
         if (type.equals(MORPH_TYPE_BUTTON)) {
@@ -97,7 +98,7 @@ public class AddNewFriendActivity extends AppCompatActivity {
         BmobIMConversation c = BmobIM.getInstance().startPrivateConversation(info, true, null);
         BmobIMConversation conversation = BmobIMConversation.obtain(BmobIMClient.getInstance(), c);
         AddFriendMessage msg = new AddFriendMessage();
-        User currentUser = BmobUser.getCurrentUser(this, User.class);
+        User currentUser = BmobUser.getCurrentUser(MyApp.getMyAppContext(), User.class);
         Map<String, Object> map = new HashMap<>();
         map.put("name", currentUser.getUsername());
         map.put("avatar", currentUser.getAvatar());

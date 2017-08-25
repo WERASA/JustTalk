@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.a700_15isk.justtalk.MyApp;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.bean.Friend;
-import com.example.a700_15isk.justtalk.MyApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +22,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendsRecycleAdapter extends RecyclerView.Adapter<FriendsRecycleAdapter.FriendsHolder> implements View.OnClickListener {
 
-    FriendsHolder friendsHolder;
-    List<Friend> friends = new ArrayList<>();
-    private OnItemClickListener mOnItemClickListener = null;
 
+    private  FriendsHolder friendsHolder;
+   private List<Friend> friends = new ArrayList<>();
+    private OnItemClickListener mOnItemClickListener = null;
 
     public FriendsRecycleAdapter(List<Friend> friends) {
         this.friends = friends;
     }
 
+    public void remove(Friend friend) {
+        friends.remove(friend);
+        notifyDataSetChanged();
+    }
+    public List<Friend> getFriends() {
+        return friends;
+    }
     @Override
     public FriendsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend, parent, false);
@@ -47,7 +54,7 @@ public class FriendsRecycleAdapter extends RecyclerView.Adapter<FriendsRecycleAd
             holder.userAccount.setText(friends.get(position).getFriendUser().getUsername());
         }
 
-        if (friends.get(position).getFriendUser().getAvatar() != null&&!friends.get(position).getFriendUser().getAvatar().equals("")) {
+        if (friends.get(position).getFriendUser().getAvatar() != null && !friends.get(position).getFriendUser().getAvatar().equals("")) {
             Glide.with(MyApp.getMyAppContext()).load(friends.get(position).getFriendUser().getAvatar()).into(holder.userAvatar);
         }
     }

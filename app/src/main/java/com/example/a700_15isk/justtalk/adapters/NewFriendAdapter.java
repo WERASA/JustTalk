@@ -41,11 +41,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class NewFriendAdapter extends RecyclerView.Adapter<NewFriendAdapter.NewFriendHolder> {
-    List<NewFriend>newFriends=new ArrayList<>();
+    public List<NewFriend> getNewFriends() {
+
+        return newFriends;
+    }
+
+    private  List<NewFriend>newFriends=new ArrayList<>();
 
 
 
     public NewFriendAdapter( List<NewFriend>newFriend){
+  
         this.newFriends=newFriend;
     }
     public void addAll(List<NewFriend>newFriends){
@@ -58,6 +64,7 @@ public class NewFriendAdapter extends RecyclerView.Adapter<NewFriendAdapter.NewF
 
     public void remove(NewFriend newFriend){
         newFriends.remove(newFriend);
+        notifyDataSetChanged();
     }
 
     public void clear(){

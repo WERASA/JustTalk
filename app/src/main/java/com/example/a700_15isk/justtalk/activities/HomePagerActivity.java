@@ -26,7 +26,7 @@ import cn.bmob.newim.BmobIM;
 import devlight.io.library.ntb.NavigationTabBar;
 
 
-public class HomePagerActivity extends AppCompatActivity  {
+public class HomePagerActivity extends AppCompatActivity {
     public Context context;
     ActivityHomePagerBinding mBinding;
     private List<Fragment> mFragments;
@@ -38,7 +38,7 @@ public class HomePagerActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home_pager);
         ActivityManager.addActivity(this);
-        context=this;
+        context = this;
         init();
 
 
@@ -55,13 +55,13 @@ public class HomePagerActivity extends AppCompatActivity  {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void init() {
         BombInitialize.connectToServe(context);
-      // List<BmobIMConversation>  bmobIMConversations = BmobIM.getInstance().loadAllConversation();
+        // List<BmobIMConversation>  bmobIMConversations = BmobIM.getInstance().loadAllConversation();
         mFragments = new ArrayList<>();
         mFragments.clear();
         FriendFragment friendFragment = new FriendFragment();
         SelfFragment selfFragment = new SelfFragment();
         ChatsFragment chatsFragment = new ChatsFragment();
-        NewFriendFragment newFriendFragment=new NewFriendFragment();
+        NewFriendFragment newFriendFragment = new NewFriendFragment();
         mFragments.add(chatsFragment);
         mFragments.add(friendFragment);
         mFragments.add(newFriendFragment);
@@ -69,8 +69,8 @@ public class HomePagerActivity extends AppCompatActivity  {
         HomePagerAdapter homePagerAdapter = new HomePagerAdapter(getSupportFragmentManager(), mFragments);
         mBinding.homePager.setAdapter(homePagerAdapter);
         mBinding.homePager.setCurrentItem(2);
-                if (getIntent().getExtras()!=null){
-        mBinding.homePager.setCurrentItem(getIntent().getIntExtra("tag",0));
+        if (getIntent().getExtras() != null) {
+            mBinding.homePager.setCurrentItem(getIntent().getIntExtra("tag", 0));
         }
 
         setNavigationTabBar();
@@ -102,8 +102,6 @@ public class HomePagerActivity extends AppCompatActivity  {
         mBinding.bottomBar.setViewPager(mBinding.homePager);
 
     }
-
-
 
 
 }

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context="com.example.a700_15isk.justtalk.activities.HomePagerActivity">
-<android.support.v4.view.ViewPager
+<com.example.a700_15isk.justtalk.views.HomePagerWithOutScroll
     android:layout_width="368dp"
     android:layout_height="0dp"
     android:id="@+id/home_pager"
@@ -22,7 +22,7 @@
     app:layout_constraintLeft_toLeftOf="parent"
     android:layout_marginStart="8dp">
 
-</android.support.v4.view.ViewPager>
+</com.example.a700_15isk.justtalk.views.HomePagerWithOutScroll>
 
 
     <devlight.io.library.ntb.NavigationTabBar
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:ntb_animation_duration="500"
+        app:ntb_animation_duration="250"
         app:ntb_icon_size_fraction="0.5" />
 
 </android.support.constraint.ConstraintLayout>

@@ -70,7 +70,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginCircle.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         Register.setOnClickListener(this);
-        getSave();
+
 
     }
 
@@ -96,7 +96,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     BmobUser user = (BmobUser) o;
                     BmobIM.getInstance().updateUserInfo(new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getEmail()));
                     startLoginAnimator();
-                    saveLogin(userName,mPassword);
                     account.setText("");
                     password.setText("");
                 } else {
@@ -107,30 +106,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }, getContext());
     }
 
-    private void saveLogin(String account, String password) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginUser", getContext().MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putString("account",account);
-        editor.putString("password",password);
-        editor.apply();
-    }
 
-    private void getSave(){
-        String password;
-        String account;
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginUser", getContext().MODE_PRIVATE);
-        account=sharedPreferences.getString("account","");
-        password=sharedPreferences.getString("password","");
-        if (account!=null&&!account.equals(""))
-        {
-            this.account.setText(account);
-        }
-        if (password!=null&&!password.equals(""))
-        {
-            this.password.setText(password);
-        }
 
-    }
 
 
     private void startLoginAnimator() {

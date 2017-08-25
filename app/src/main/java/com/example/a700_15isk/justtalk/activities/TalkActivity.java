@@ -2,6 +2,7 @@ package com.example.a700_15isk.justtalk.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -27,7 +30,6 @@ import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.ActivityTalkBinding;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
 import com.example.a700_15isk.justtalk.tools.BitMapUtil;
-import com.example.a700_15isk.justtalk.tools.CheckPermission;
 import com.example.a700_15isk.justtalk.tools.RandomName;
 import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
 
@@ -37,7 +39,6 @@ import java.util.Map;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
-import cn.bmob.newim.bean.BmobIMFileMessage;
 import cn.bmob.newim.bean.BmobIMImageMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMTextMessage;
@@ -56,7 +57,6 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
     public static AMapLocationClient mLocationClient = null;
     BmobIMConversation c;
     String savePhotoPath;
-    String mLocation;
     TalkRoomRecycleAdapter talkRoomRecycleAdapter;
     LinearLayoutManager linearLayoutManager;
     private ActivityTalkBinding mBinding;
@@ -119,23 +119,7 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         talkRoomRecycleAdapter = new TalkRoomRecycleAdapter(this, c);
         mBinding.talkList.setAdapter(talkRoomRecycleAdapter);
         mBinding.talkList.setLayoutManager(linearLayoutManager);
-        if (userInfo != null) {
-            if (userInfo.getAvatar() != null) {
-                c.setConversationIcon(userInfo.getAvatar());
-            }
-            if (userInfo.getNick() != null) {
-                mBinding.talkRoomBar.setTitle(userInfo.getNick());
-                c.setConversationTitle(userInfo.getNick());
-            }
-
-        } else {
-            if (c.getConversationTitle() != null) {
-                mBinding.talkRoomBar.setTitle(c.getConversationTitle());
-            }
-        }
-        mBinding.talkRoomBar.setTitleTextColor(getResources().getColor(R.color.textColor));
-        mBinding.talkRoomBar.setSubtitleTextColor(getResources().getColor(R.color.textColor));
-        mBinding.talkRoomBar.setNavigationIcon(R.mipmap.ic_back);
+       setRoomBar();
         setListener();
 
     }
@@ -153,34 +137,12 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         c.sendMessage(msg, listener);
     }
 
-    public void sendImageFile(String filePath) {
-        BmobIMFileMessage file = new BmobIMFileMessage(filePath);
-        c.sendMessage(file, listener);
-    }
 
     public void sendImageMessage(String path) {
         BmobIMImageMessage image = new BmobIMImageMessage(path);
         c.sendMessage(image, listener);
     }
 
-    private void addMessage2Chat(MessageEvent event) {
-        BmobIMMessage msg = event.getMessage();
-        if (c != null && event != null && c.getConversationId().equals(event.getConversation().getConversationId())) //如果是当前会话的消息){//并且不为暂态消息
-            if (talkRoomRecycleAdapter.findPosition(msg) < 0) {
-                talkRoomRecycleAdapter.addMessage(msg);
-                talkRoomRecycleAdapter.notifyDataSetChanged();
-                c.updateReceiveStatus(msg);
-                scrollToBottom();
-            } else {
-                Log.d("tag", "null");
-            }
-    }
-
-    private void openAlbum() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, Config.OPEN_ALBUM_CODE);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -197,37 +159,30 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
             }
         }
 
-
     }
 
-    private void scrollToBottom() {
-        linearLayoutManager.scrollToPositionWithOffset(talkRoomRecycleAdapter.getItemCount() - 1, 0);
-    }
+    public void setRoomBar() {
+        if (userInfo != null) {
+            if (userInfo.getAvatar() != null) {
+                c.setConversationIcon(userInfo.getAvatar());
+            }
+            if (userInfo.getNick() != null) {
+                mBinding.talkRoomBar.setTitle(userInfo.getNick());
+                c.setConversationTitle(userInfo.getNick());
+            }
 
-    @Override
-    public void onMessageReceive(List<MessageEvent> list) {
-        for (int i = 0; i < list.size(); i++) {
-            addMessage2Chat(list.get(i));
+        } else {
+            if (c.getConversationTitle() != null) {
+                mBinding.talkRoomBar.setTitle(c.getConversationTitle());
+            }
         }
+        mBinding.talkRoomBar.setTitleTextColor(getResources().getColor(R.color.textColor));
+        mBinding.talkRoomBar.setSubtitleTextColor(getResources().getColor(R.color.textColor));
+        mBinding.talkRoomBar.setNavigationIcon(R.mipmap.ic_back);
 
-    }
-
-    @Override
-    protected void onResume() {
-        BmobIM.getInstance().addMessageListHandler(this);
-        BmobNotificationManager.getInstance(this).cancelNotification();
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        BmobIM.getInstance().removeMessageListHandler(this);
-        super.onPause();
     }
 
     public void setListener() {
-
-
         mBinding.talkRoomBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,11 +201,7 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         mBinding.location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CheckPermission.checkPermission(TalkActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    getLocation();
-                } else
-                    Toast.makeText(getApplicationContext(), "Need Location permission", Toast.LENGTH_SHORT).show();
-
+                checkLocationPermission();
             }
         });
         mBinding.send.setOnClickListener(new View.OnClickListener() {
@@ -263,11 +214,7 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         mBinding.sendImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CheckPermission.checkPermission(TalkActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    openAlbum();
-                } else
-                    Toast.makeText(getApplicationContext(), "Request permission fail", Toast.LENGTH_SHORT).show();
-
+                checkFileReadPermission();
             }
 
         });
@@ -297,5 +244,74 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
             }
         });
     }//通过高德地图获取定位消息
+
+    public void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(TalkActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(TalkActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+        } else {
+            getLocation();
+        }
+
+    }
+
+    public void checkFileReadPermission() {
+        if (ContextCompat.checkSelfPermission(TalkActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(TalkActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+        } else {
+            openAlbum();
+        }
+
+    }
+
+
+    private void scrollToBottom() {
+        linearLayoutManager.scrollToPositionWithOffset(talkRoomRecycleAdapter.getItemCount() - 1, 0);
+    }
+
+    @Override
+    public void onMessageReceive(List<MessageEvent> list) {
+        for (int i = 0; i < list.size(); i++) {
+            addMessage2Chat(list.get(i));
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        BmobIM.getInstance().addMessageListHandler(this);
+        BmobNotificationManager.getInstance(this).cancelNotification();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        BmobIM.getInstance().removeMessageListHandler(this);
+        super.onPause();
+    }
+
+    private void addMessage2Chat(MessageEvent event) {
+        BmobIMMessage msg = event.getMessage();
+        if (c != null && event != null && c.getConversationId().equals(event.getConversation().getConversationId())) //如果是当前会话的消息){//并且不为暂态消息
+            if (talkRoomRecycleAdapter.findPosition(msg) < 0) {
+                talkRoomRecycleAdapter.addMessage(msg);
+                talkRoomRecycleAdapter.notifyDataSetChanged();
+                c.updateReceiveStatus(msg);
+                scrollToBottom();
+            } else {
+                Log.d("tag", "null");
+            }
+    }
+
+    private void openAlbum() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, Config.OPEN_ALBUM_CODE);
+    }
 
 }

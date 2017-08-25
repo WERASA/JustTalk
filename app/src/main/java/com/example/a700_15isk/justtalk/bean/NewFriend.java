@@ -82,4 +82,5 @@ public class NewFriend implements Serializable {
     public void setTime(Long time) {
         this.time = time;
     }
+
 }

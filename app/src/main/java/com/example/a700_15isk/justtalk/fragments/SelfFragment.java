@@ -47,7 +47,7 @@ public class SelfFragment extends Fragment {
     private int age;
     private boolean sex;
     private String userEmail;
-    private ArrayList<SexBean> sexItem = new ArrayList<>();
+   final ArrayList<SexBean> sexItem = new ArrayList<SexBean>(){{add(new SexBean("Man")); add(new SexBean("Woman"));}};
     private String path;
 
 
@@ -60,10 +60,9 @@ public class SelfFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_self, container, false);
-        setPvOptionsText();
+
         init();
         initPickView();
-
         return mBinding.getRoot();
 
     }
@@ -134,11 +133,7 @@ public class SelfFragment extends Fragment {
                     openAlbum();
             }
         });
-
-
         setTextChangeListen();
-
-
     }
 
     @Override
@@ -150,6 +145,7 @@ public class SelfFragment extends Fragment {
 
 
     private void initPickView() {
+
         pvOptions = new OptionsPickerView.Builder(getContext(), new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
@@ -176,17 +172,13 @@ public class SelfFragment extends Fragment {
                 .setBgColor(Color.parseColor("#4a3e5c"))
                 .isDialog(false).build()
         ;
-        if (sexItem.size()<=2){
-        pvOptions.setPicker(sexItem);}
+
+        pvOptions.setPicker(sexItem);
 
 
     }
 
 
-    private void setPvOptionsText() {
-        sexItem.add(new SexBean("Man"));
-        sexItem.add(new SexBean("Woman"));
-    }
 
 
     private void setTextChangeListen() {

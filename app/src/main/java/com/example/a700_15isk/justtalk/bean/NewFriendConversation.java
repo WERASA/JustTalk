@@ -27,7 +27,6 @@ public class NewFriendConversation extends Conversation{
             if(TextUtils.isEmpty(name)){
                 name = lastFriend.getUid();
             }
-            //目前的好友请求都是别人发给我的
             if(status==null || status== Config.STATUS_VERIFY_NONE||status ==Config.STATUS_VERIFY_READED){
                 return name+"请求添加好友";
             }else{

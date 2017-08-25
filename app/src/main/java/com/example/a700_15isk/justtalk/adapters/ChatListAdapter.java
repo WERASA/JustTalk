@@ -13,6 +13,7 @@ import com.example.a700_15isk.justtalk.tools.ConversationUtil;
 
 import java.util.List;
 
+import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -30,7 +31,14 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     }
 
 
+    public List<BmobIMConversation> getBmobIMConversations() {
+        return bmobIMConversations;
+    }
 
+    public void remove(BmobIMConversation bmobIMConversation){
+        bmobIMConversations.remove(bmobIMConversation);
+        notifyDataSetChanged();
+    }
 
     public void addAll(List<BmobIMConversation> bmobIMConversations) {
         if (bmobIMConversations!=null){

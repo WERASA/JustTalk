@@ -15,14 +15,5 @@ import com.example.a700_15isk.justtalk.activities.TalkActivity;
 public class CheckPermission {
 
 
-    public static boolean checkPermission(Activity activity,String requestPermission){
-        if (ContextCompat.checkSelfPermission(activity, requestPermission)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(activity,
-                    new String[]{requestPermission},1);
-                 return true;
-        } else{
-            return true;}
 
-    }
 }
