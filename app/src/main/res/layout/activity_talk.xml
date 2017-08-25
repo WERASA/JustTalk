@@ -34,6 +34,7 @@
                 android:id="@+id/sendImage"
                 android:src="@drawable/ic_photo_library_black_24dp"/>
             <ImageView
+                android:id="@+id/location"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
@@ -79,6 +80,7 @@
                 />
 
             <Button
+                android:textColor="@color/textColor"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"

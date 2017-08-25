@@ -1,5 +1,6 @@
 package com.example.a700_15isk.justtalk.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -7,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,18 +16,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.example.a700_15isk.justtalk.Config;
+import com.example.a700_15isk.justtalk.MyApp;
 import com.example.a700_15isk.justtalk.R;
 import com.example.a700_15isk.justtalk.adapters.TalkRoomRecycleAdapter;
 import com.example.a700_15isk.justtalk.bean.User;
 import com.example.a700_15isk.justtalk.databinding.ActivityTalkBinding;
 import com.example.a700_15isk.justtalk.tools.ActivityManager;
 import com.example.a700_15isk.justtalk.tools.BitMapUtil;
+import com.example.a700_15isk.justtalk.tools.CheckPermission;
 import com.example.a700_15isk.justtalk.tools.RandomName;
 import com.example.a700_15isk.justtalk.tools.bmobtools.BombInitialize;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +52,14 @@ import cn.bmob.v3.exception.BmobException;
 
 public class TalkActivity extends AppCompatActivity implements ObseverListener, MessageListHandler {
 
+    public static AMapLocationClientOption mLocationOption = null;
+    public static AMapLocationClient mLocationClient = null;
     BmobIMConversation c;
     String savePhotoPath;
+    String mLocation;
     TalkRoomRecycleAdapter talkRoomRecycleAdapter;
     LinearLayoutManager linearLayoutManager;
     private ActivityTalkBinding mBinding;
-    private String path;
     public MessageSendListener listener = new MessageSendListener() {
 
         @Override
@@ -74,13 +79,14 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         @Override
         public void done(BmobIMMessage bmobIMMessage, BmobException e) {
             if (e == null) {
-                Log.d("path", path);
                 talkRoomRecycleAdapter.notifyDataSetChanged();
-                //  mBinding.EditText.setText("");
-            } else e.printStackTrace();
+            } else {
+                e.printStackTrace();
+            }
 
         }
     };
+    private String path;
     private User userInfo;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -93,8 +99,8 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
-        savePhotoPath= Environment.getExternalStorageDirectory().getPath();;
-        savePhotoPath=savePhotoPath+ "/"+RandomName.getRandomString(2)+".png";
+        savePhotoPath = Environment.getExternalStorageDirectory().getPath();
+        savePhotoPath = savePhotoPath + "/" + RandomName.getRandomString(2) + ".png";
         init();
     }
 
@@ -134,8 +140,8 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
 
     }
 
-    private void sendMessage() {
-        String text = mBinding.EditText.getText().toString();
+    private void sendMessage(String text) {
+
         if (text.isEmpty()) {
             return;
         }
@@ -146,10 +152,12 @@ public class TalkActivity extends AppCompatActivity implements ObseverListener, 
         msg.setExtraMap(map);
         c.sendMessage(msg, listener);
     }
-public void sendImageFile(String filePath){
-    BmobIMFileMessage file =new BmobIMFileMessage(filePath);
-   c.sendMessage(file,listener);
-}
+
+    public void sendImageFile(String filePath) {
+        BmobIMFileMessage file = new BmobIMFileMessage(filePath);
+        c.sendMessage(file, listener);
+    }
+
     public void sendImageMessage(String path) {
         BmobIMImageMessage image = new BmobIMImageMessage(path);
         c.sendMessage(image, listener);
@@ -217,8 +225,6 @@ public void sendImageFile(String filePath){
         super.onPause();
     }
 
-
-
     public void setListener() {
 
 
@@ -237,19 +243,59 @@ public void sendImageFile(String filePath){
 
             }
         });
+        mBinding.location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CheckPermission.checkPermission(TalkActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    getLocation();
+                } else
+                    Toast.makeText(getApplicationContext(), "Need Location permission", Toast.LENGTH_SHORT).show();
+
+            }
+        });
         mBinding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage();
+                String text = mBinding.EditText.getText().toString();
+                sendMessage(text);
             }
         });
         mBinding.sendImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAlbum();
+                if (CheckPermission.checkPermission(TalkActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    openAlbum();
+                } else
+                    Toast.makeText(getApplicationContext(), "Request permission fail", Toast.LENGTH_SHORT).show();
+
             }
+
         });
 
 
     }
+
+    public void getLocation() {
+        mLocationOption = new AMapLocationClientOption();
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setOnceLocation(true);
+        mLocationOption.setOnceLocationLatest(true);
+        mLocationOption.setNeedAddress(true);
+        mLocationOption.setHttpTimeOut(20000);
+        mLocationOption.setLocationCacheEnable(false);
+        mLocationClient = new AMapLocationClient(MyApp.getMyAppContext());
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.startLocation();
+        mLocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        sendMessage(aMapLocation.getAddress());
+                    }
+                }
+            }
+        });
+    }//通过高德地图获取定位消息
+
 }
